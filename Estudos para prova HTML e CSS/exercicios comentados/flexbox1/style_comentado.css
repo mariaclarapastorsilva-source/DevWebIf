@@ -1,0 +1,470 @@
+/* ============================================================
+   RESET GLOBAL
+   ============================================================ */
+
+* {
+  margin: 0;
+  /* Remove a margem padrão de todos os elementos HTML */
+
+  padding: 0;
+  /* Remove o espaçamento interno padrão de todos os elementos */
+
+  box-sizing: border-box;
+  /* Faz com que padding e border sejam incluídos no tamanho total do elemento,
+     evitando que ele "estoure" o layout */
+}
+
+/* ============================================================
+   ESTILO DO CORPO DA PÁGINA
+   ============================================================ */
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  /* Define a fonte principal da página. Usa Segoe UI se disponível,
+     caso contrário qualquer fonte sans-serif genérica */
+
+  background-color: #eaeef2;
+  /* Cor de fundo padrão (cinza-azulado claro) no tema claro */
+
+  color: #2c3e50;
+  /* Cor padrão do texto (azul-escuro acinzentado) */
+
+  transition: background-color 0.4s ease, color 0.4s ease;
+  /* Anima suavemente a mudança de cor de fundo e do texto em 0.4 segundos,
+     criando o efeito de transição ao alternar o tema */
+}
+
+/* ============================================================
+   CHECKBOXES OCULTOS (controles do menu e do tema)
+   ============================================================ */
+
+#menu-toggle,
+#theme-toggle {
+  display: none;
+  /* Esconde completamente os checkboxes da tela — eles existem no HTML
+     apenas como "chaves" lógicas que o CSS usa para reagir a cliques */
+}
+
+/* ============================================================
+   BOTÃO HAMBÚRGUER (ícone ☰ do menu lateral)
+   ============================================================ */
+
+.menu-btn {
+  position: fixed;
+  /* Fixa o botão na tela, mesmo com scroll */
+
+  top: 18px;
+  /* Distância do topo da tela */
+
+  left: 18px;
+  /* Distância da borda esquerda da tela */
+
+  font-size: 22px;
+  /* Tamanho do ícone ☰ */
+
+  color: #fff;
+  /* Cor branca para o ícone */
+
+  cursor: pointer;
+  /* Muda o cursor para "mãozinha" ao passar sobre o botão */
+
+  z-index: 200;
+  /* Garante que o botão fique acima de outros elementos (topbar, sidebar, etc.) */
+
+  transition: transform 0.3s ease;
+  /* Anima a transformação (escala) do botão suavemente */
+}
+
+.menu-btn:hover {
+  transform: scale(1.2);
+  /* Aumenta o botão em 20% ao passar o mouse — feedback visual */
+}
+
+/* ============================================================
+   MENU LATERAL (SIDEBAR)
+   ============================================================ */
+
+.sidebar {
+  position: fixed;
+  /* Fixa o menu lateral na tela */
+
+  top: 0;
+  /* Começa do topo da tela */
+
+  left: -160px;
+  /* Posição inicial: escondida para fora da tela (à esquerda) */
+
+  width: 160px;
+  /* Largura do menu lateral */
+
+  height: 100%;
+  /* Ocupa 100% da altura da tela */
+
+  background-color: #2c3e50;
+  /* Cor de fundo da sidebar (azul-escuro) */
+
+  display: flex;
+  /* Usa Flexbox para organizar os links internamente */
+
+  flex-direction: column;
+  /* Empilha os links verticalmente */
+
+  padding-top: 60px;
+  /* Espaço no topo para não sobrepor o botão hambúrguer */
+
+  gap: 10px;
+  /* Espaço entre cada link */
+
+  z-index: 100;
+  /* Fica acima do conteúdo mas abaixo do botão hambúrguer */
+
+  transition: left 0.4s ease;
+  /* Anima o deslizamento da sidebar da esquerda para dentro da tela */
+}
+
+.sidebar a {
+  color: #fff;
+  /* Cor branca para os links da sidebar */
+
+  text-decoration: none;
+  /* Remove o sublinhado padrão dos links */
+
+  padding: 10px 20px;
+  /* Espaçamento interno (cima/baixo: 10px, esquerda/direita: 20px) */
+
+  font-size: 15px;
+  /* Tamanho do texto dos links */
+
+  transition: background-color 0.3s ease;
+  /* Anima a mudança de cor de fundo ao passar o mouse */
+}
+
+.sidebar a:hover {
+  background-color: #3d5166;
+  /* Destaca o link com cor mais clara ao passar o mouse */
+}
+
+/* ============================================================
+   LÓGICA CSS: MENU TOGGLE (abrir/fechar sidebar)
+   ============================================================ */
+
+#menu-toggle:checked ~ .sidebar {
+  left: 0;
+  /* Quando o checkbox #menu-toggle está marcado (menu aberto),
+     move a sidebar para dentro da tela (posição left: 0) */
+}
+
+#menu-toggle:checked ~ .content,
+#menu-toggle:checked ~ footer {
+  margin-left: 160px;
+  /* Quando o menu está aberto, empurra o conteúdo e o rodapé
+     para a direita para não ficarem atrás da sidebar */
+}
+
+/* ============================================================
+   BARRA SUPERIOR (TOPBAR / HEADER)
+   ============================================================ */
+
+.topbar {
+  position: fixed;
+  /* Fixa o header no topo da tela */
+
+  top: 0;
+  left: 0;
+  right: 0;
+  /* Estica o header de ponta a ponta horizontalmente */
+
+  height: 55px;
+  /* Altura fixa da topbar */
+
+  background-color: #2c3e50;
+  /* Cor de fundo da topbar (azul-escuro) */
+
+  display: flex;
+  /* Usa Flexbox para alinhar logo e navegação */
+
+  align-items: center;
+  /* Centraliza verticalmente os itens dentro da topbar */
+
+  justify-content: space-between;
+  /* Separa a logo (esquerda) da navegação (direita) */
+
+  padding: 0 20px 0 60px;
+  /* Padding: topo/baixo 0, direita 20px, esquerda 60px
+     (60px para não sobrepor o botão hambúrguer) */
+
+  z-index: 150;
+  /* Fica acima do conteúdo mas abaixo do botão hambúrguer */
+
+  transition: background-color 0.4s ease;
+  /* Anima a mudança de cor ao alternar o tema */
+}
+
+/* ============================================================
+   LOGO DO SITE
+   ============================================================ */
+
+.logo {
+  color: #fff;
+  /* Cor branca para o nome do site */
+
+  font-size: 20px;
+  /* Tamanho da fonte do logo */
+
+  font-weight: bold;
+  /* Texto em negrito */
+
+  letter-spacing: 1px;
+  /* Espaçamento entre as letras para estética */
+}
+
+/* ============================================================
+   NAVEGAÇÃO SUPERIOR (links no header)
+   ============================================================ */
+
+.topnav {
+  display: flex;
+  /* Organiza os links horizontalmente */
+
+  align-items: center;
+  /* Alinha verticalmente ao centro */
+
+  gap: 20px;
+  /* Espaçamento de 20px entre cada link/botão */
+}
+
+.topnav a {
+  color: #fff;
+  /* Cor branca para os links */
+
+  text-decoration: none;
+  /* Remove o sublinhado */
+
+  font-size: 14px;
+  /* Tamanho da fonte dos links */
+
+  transition: opacity 0.3s ease;
+  /* Anima a mudança de opacidade ao passar o mouse */
+}
+
+.topnav a:hover {
+  opacity: 0.7;
+  /* Torna o link semitransparente ao passar o mouse — feedback visual */
+}
+
+/* ============================================================
+   BOTÃO DE TEMA (ícone 🌘 lua)
+   ============================================================ */
+
+.theme-btn {
+  transform: rotate(180deg);
+  /* Rotaciona o ícone da lua 180° para estética visual */
+}
+
+.theme-btn:hover {
+  transform: rotate(180deg);
+  /* Mantém a rotação ao passar o mouse (sem efeito adicional aqui) */
+}
+
+/* ============================================================
+   ÁREA PRINCIPAL DE CONTEÚDO
+   ============================================================ */
+
+.content {
+  margin-top: 55px;
+  /* Desloca o conteúdo para baixo para não ficar atrás da topbar (altura 55px) */
+
+  margin-left: 0;
+  /* Sem margem esquerda por padrão (sidebar fechada) */
+
+  padding: 40px;
+  /* Espaçamento interno de 40px em todos os lados */
+
+  min-height: calc(100vh - 55px - 50px);
+  /* Altura mínima: total da tela menos a topbar (55px) e o rodapé (~50px)
+     garante que o footer fique sempre no final */
+
+  transition: margin-left 0.4s ease, background-color 0.4s ease;
+  /* Anima a margem (quando a sidebar abre) e a cor de fundo (troca de tema) */
+}
+
+.content h1 {
+  font-size: 22px;
+  /* Tamanho do título principal */
+
+  margin-bottom: 8px;
+  /* Espaço abaixo do título */
+
+  text-align: center;
+  /* Centraliza o título */
+}
+
+.content p {
+  text-align: center;
+  /* Centraliza o parágrafo */
+
+  font-size: 14px;
+  /* Tamanho da fonte do parágrafo */
+
+  color: #555;
+  /* Cor cinza para o texto descritivo */
+
+  margin-bottom: 30px;
+  /* Espaço abaixo do parágrafo antes dos cards */
+
+  transition: color 0.4s ease;
+  /* Anima a mudança de cor ao trocar de tema */
+}
+
+/* ============================================================
+   CONTAINER DOS CARDS
+   ============================================================ */
+
+.cards {
+  display: flex;
+  /* Usa Flexbox para organizar os cards lado a lado */
+
+  justify-content: center;
+  /* Centraliza os cards horizontalmente */
+
+  gap: 20px;
+  /* Espaço de 20px entre os cards */
+
+  flex-wrap: wrap;
+  /* Permite que os cards quebrem para a linha de baixo em telas pequenas */
+}
+
+/* ============================================================
+   CARD INDIVIDUAL
+   ============================================================ */
+
+.card {
+  background-color: #fff;
+  /* Fundo branco do card */
+
+  border: 1px solid #dce1e7;
+  /* Borda fina e cinza-clara ao redor do card */
+
+  border-radius: 10px;
+  /* Cantos arredondados */
+
+  width: 180px;
+  /* Largura fixa de cada card */
+
+  height: 80px;
+  /* Altura fixa de cada card */
+
+  display: flex;
+  /* Usa Flexbox para centralizar o conteúdo dentro do card */
+
+  align-items: center;
+  /* Centraliza verticalmente */
+
+  justify-content: center;
+  /* Centraliza horizontalmente */
+
+  font-size: 15px;
+  /* Tamanho da fonte do texto do card */
+
+  color: #444;
+  /* Cor do texto */
+
+  cursor: pointer;
+  /* Cursor de mãozinha ao passar sobre o card */
+
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.4s ease, color 0.4s ease;
+  /* Anima: elevação (transform), sombra, cor de fundo e cor do texto */
+}
+
+.card:hover {
+  transform: translateY(-6px) scale(1.03);
+  /* Eleva o card 6px para cima e aumenta levemente ao passar o mouse */
+
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  /* Adiciona sombra suave para dar efeito de "flutuação" */
+}
+
+/* ============================================================
+   RODAPÉ (FOOTER)
+   ============================================================ */
+
+footer {
+  background-color: #2c3e50;
+  /* Cor de fundo do rodapé (azul-escuro, igual à topbar) */
+
+  color: #ccc;
+  /* Cor cinza-clara para o texto do rodapé */
+
+  text-align: center;
+  /* Centraliza o texto */
+
+  padding: 14px;
+  /* Espaçamento interno */
+
+  font-size: 13px;
+  /* Tamanho da fonte */
+
+  margin-left: 0;
+  /* Sem margem esquerda por padrão (sidebar fechada) */
+
+  transition: margin-left 0.4s ease, background-color 0.4s ease;
+  /* Anima o deslocamento (quando sidebar abre) e a cor (troca de tema) */
+}
+
+/* ============================================================
+   LÓGICA CSS: TEMA ESCURO (dark mode)
+   ============================================================ */
+
+#theme-toggle:checked ~ .menu-btn {
+  color: #aaa;
+  /* No tema escuro, escurece o ícone hambúrguer para combinar com o fundo */
+}
+
+#theme-toggle:checked ~ .topbar {
+  background-color: #111;
+  /* Topbar fica quase preta no tema escuro */
+}
+
+#theme-toggle:checked ~ .content {
+  background-color: #1a1a2e;
+  /* Fundo do conteúdo no tema escuro: azul-marinho escuro */
+
+  color: #e0e0e0;
+  /* Texto claro no tema escuro */
+}
+
+#theme-toggle:checked ~ .content p {
+  color: #aaa;
+  /* Parágrafo mais suave no tema escuro */
+}
+
+#theme-toggle:checked ~ .content .card {
+  background-color: #16213e;
+  /* Fundo dos cards no tema escuro */
+
+  border-color: #2a2a4a;
+  /* Borda dos cards levemente mais clara que o fundo */
+
+  color: #e0e0e0;
+  /* Texto claro dentro dos cards */
+}
+
+#theme-toggle:checked ~ footer {
+  background-color: #111;
+  /* Rodapé quase preto no tema escuro */
+
+  color: #888;
+  /* Texto mais apagado no rodapé do tema escuro */
+}
+
+#theme-toggle:checked ~ .sidebar {
+  background-color: #111;
+  /* Sidebar fica quase preta no tema escuro */
+}
+
+body:has(#theme-toggle:checked) {
+  background-color: #1a1a2e;
+  /* Garante que o fundo do body também mude no tema escuro.
+     Usa :has() — seletor moderno que verifica se o body "contém"
+     o #theme-toggle marcado — cobrindo áreas não alcançadas pelos seletores ~ acima */
+}

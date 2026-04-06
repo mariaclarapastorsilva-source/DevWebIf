@@ -1,0 +1,2432 @@
+/*
+  ================================================================
+  ESTILO.CSS — Guia Completo de Desenvolvimento Web 1
+  Profa. Ariadne Arrais | IFSP ADS 3º Semestre
+  
+  ORGANIZAÇÃO:
+  1.  Variáveis CSS (:root)
+  2.  Reset e base
+  3.  Sidebar interativa (:checked)
+  4.  Wrapper e layout geral
+  5.  Header
+  6.  Navegação
+  7.  Seções e artigos
+  8.  Tabelas
+  9.  Box Model demo
+  10. Display demo
+  11. Position demo
+  12. Seletores demo
+  13. Pseudo-classes demo
+  14. Pseudo-elementos demo
+  15. Cascateamento demo
+  16. Cores, fontes, background demo
+  17. Flexbox (conceito + atividade 03)
+  18. Grid (conceito + responsividade)
+  19. Animações — transition
+  20. Animações — @keyframes
+  21. Transform
+  22. Clip-path
+  23. :checked demos
+  24. :target demos
+  25. Variáveis CSS demo
+  26. Componentes reutilizáveis (cards, botões, info-box)
+  27. Footer
+  28. Botão voltar ao topo (position: fixed)
+  29. Media queries (responsividade)
+  ================================================================
+*/
+
+
+/* ================================================================
+   1. VARIÁVEIS CSS — Declaradas em :root para acesso global
+   :root representa o elemento <html> — maior escopo possível
+   Variáveis começam SEMPRE com -- (dois hífens)
+   Acessadas com var(--nome) em qualquer seletor
+   ================================================================ */
+:root {
+  /* --- Paleta de cores principais --- */
+  --cor-primaria:    #1F4E79;   /* azul escuro — cor principal do tema */
+  --cor-secundaria:  #2E75B6;   /* azul médio — cor secundária */
+  --cor-destaque:    #FF6B35;   /* laranja — cor de destaque/ação */
+  --cor-sucesso:     #1A7A4A;   /* verde — estados de sucesso */
+  --cor-aviso:       #B8860B;   /* dourado escuro — avisos */
+  --cor-erro:        #AE2020;   /* vermelho — erros */
+
+  /* --- Texto e fundos --- */
+  --cor-texto:       #2d2d2d;   /* quase preto — texto principal */
+  --cor-texto-leve:  #666666;   /* cinza — texto secundário */
+  --cor-fundo:       #f0f4f8;   /* cinza azulado — fundo da página */
+  --cor-card:        #ffffff;   /* branco — fundo dos cards */
+  --cor-borda:       #dde3ea;   /* cinza claro — bordas sutis */
+
+  /* --- Tipografia --- */
+  --fonte-corpo:     'Segoe UI', Arial, sans-serif;  /* fonte principal */
+  --fonte-codigo:    'Courier New', Consolas, monospace; /* fonte para código */
+  --tamanho-base:    16px;      /* 1rem = 16px */
+  --linha-base:      1.6;       /* line-height base — facilita leitura */
+
+  /* --- Espaçamentos --- */
+  --espacamento-xs:  4px;
+  --espacamento-sm:  8px;
+  --espacamento-base:16px;      /* usado como: padding: var(--espacamento-base) */
+  --espacamento-md:  24px;
+  --espacamento-lg:  40px;
+  --espacamento-xl:  64px;
+
+  /* --- Bordas --- */
+  --raio-sm:         4px;       /* borda arredondada pequena */
+  --raio-base:       8px;       /* borda arredondada padrão */
+  --raio-lg:         16px;      /* borda arredondada grande */
+  --raio-full:       999px;     /* pill shape (cápsula) */
+
+  /* --- Sombras --- */
+  --sombra-sm:  0 1px 3px rgba(0,0,0,.10);
+  --sombra-base:0 4px 12px rgba(0,0,0,.12);  /* sombra padrão dos cards */
+  --sombra-lg:  0 8px 24px rgba(0,0,0,.15);  /* sombra ao hover */
+
+  /* --- Sidebar --- */
+  --largura-sidebar: 240px;     /* largura do menu lateral */
+
+  /* --- Transições --- */
+  --transicao-rapida: 0.2s ease;   /* para hover simples */
+  --transicao-base:   0.3s ease;   /* transição padrão */
+  --transicao-lenta:  0.5s ease;   /* para efeitos mais suaves */
+}
+
+
+/* ================================================================
+   2. RESET E BASE
+   Remove espaçamentos padrão dos navegadores e define base global
+   ================================================================ */
+
+/* Seletor universal (*) → aplica a TODOS os elementos.
+   box-sizing: border-box → padding e border ficam DENTRO da largura declarada.
+   Exemplo: width:200px + padding:20px = ocupa 200px (não 240px). */
+*,
+*::before,  /* também aplica nos pseudo-elementos ::before */
+*::after {  /* e ::after de todos os elementos */
+  box-sizing: border-box; /* padding e border incluídos na largura/altura */
+  margin:  0;             /* remove margem padrão do navegador */
+  padding: 0;             /* remove preenchimento padrão */
+}
+
+/* html → configura o scroll suave para âncoras (#id) */
+html {
+  scroll-behavior: smooth; /* rola suavemente ao clicar em links âncora */
+  font-size: var(--tamanho-base); /* 1rem = 16px — base para todos os valores em rem */
+}
+
+/* body → estilos globais da página */
+body {
+  font-family:      var(--fonte-corpo);    /* fonte padrão de todo o texto */
+  font-size:        1rem;                  /* 16px */
+  line-height:      var(--linha-base);     /* espaçamento entre linhas */
+  color:            var(--cor-texto);      /* cor padrão do texto (herdável — filhos herdam) */
+  background-color: var(--cor-fundo);      /* cor de fundo da página */
+  /* overflow-x: hidden → evita scroll horizontal indesejado */
+  overflow-x: hidden;
+}
+
+/* --- Tipografia base --- */
+
+/* Hierarquia de títulos: h1 a h6 */
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.2;             /* espaçamento de linha menor para títulos */
+  color:       var(--cor-primaria); /* cor dos títulos usa variável */
+  margin-bottom: 0.5em;         /* espaço abaixo dos títulos — em relativo ao próprio font-size */
+}
+
+h1 { font-size: 2.2rem;   } /* ~35px */
+h2 { font-size: 1.8rem;   } /* ~29px */
+h3 { font-size: 1.4rem;   } /* ~22px */
+h4 { font-size: 1.15rem;  } /* ~18px */
+h5 { font-size: 1rem;     } /* 16px */
+h6 { font-size: 0.875rem; } /* ~14px */
+
+/* Parágrafos */
+p {
+  margin-bottom: 1em;     /* espaço abaixo de cada parágrafo */
+  max-width: 70ch;        /* ch = largura do caractere "0" — limita linha a ~70 chars para leitura */
+}
+
+/* Links */
+a {
+  color:           var(--cor-secundaria);   /* cor dos links */
+  text-decoration: none;                    /* sem sublinhado por padrão */
+  transition: color var(--transicao-rapida); /* anima a mudança de cor */
+}
+
+/* :hover → muda estilo ao passar o mouse */
+a:hover {
+  color:           var(--cor-destaque);     /* cor diferente no hover */
+  text-decoration: underline;               /* sublinhado aparece no hover */
+}
+
+/* :focus-visible → anel de foco visível quando navegado pelo teclado */
+a:focus-visible {
+  outline: 3px solid var(--cor-destaque);   /* borda de foco para acessibilidade */
+  outline-offset: 2px;
+  border-radius: var(--raio-sm);
+}
+
+/* Código inline e blocos */
+code {
+  font-family:      var(--fonte-codigo);     /* fonte monoespaçada */
+  font-size:        0.875em;                 /* um pouco menor que o texto ao redor */
+  background-color: #e8f0fe;                 /* fundo levemente azulado */
+  color:            #c7254e;                 /* vermelho para código inline */
+  padding:          2px 6px;                 /* espaçamento interno */
+  border-radius:    var(--raio-sm);          /* cantos arredondados */
+}
+
+/* pre → preserva espaços, quebras de linha. Para blocos de código. */
+pre {
+  background-color: #1e2433;              /* fundo escuro para código */
+  color:            #e2e8f0;              /* texto claro */
+  padding:          var(--espacamento-base);
+  border-radius:    var(--raio-base);
+  overflow-x:       auto;                /* scroll horizontal se necessário */
+  margin:           1em 0;
+  border-left:      4px solid var(--cor-secundaria); /* barra lateral decorativa */
+}
+
+/* pre code → dentro de um bloco pre, o code perde o fundo vermelho */
+pre code {
+  background: none;   /* remove fundo do code inline */
+  color:      inherit; /* herda a cor do pre */
+  padding:    0;
+  font-size:  0.85rem;
+}
+
+/* Listas */
+ul, ol {
+  padding-left: 1.5em;    /* indentação das listas */
+  margin-bottom: 1em;
+}
+
+li {
+  margin-bottom: 0.3em;   /* espaço entre itens */
+}
+
+/* Imagens responsivas: nunca ultrapassam o container */
+img {
+  max-width:  100%;       /* imagem não ultrapassa a largura do pai */
+  height:     auto;       /* mantém a proporção original */
+  display:    block;      /* remove espaço de baseline das imagens */
+}
+
+/* small → texto menor */
+small {
+  font-size: 0.8rem;
+  color:     var(--cor-texto-leve);
+}
+
+/* strong → negrito semântico */
+strong {
+  font-weight: 700;
+  color:       var(--cor-primaria);
+}
+
+
+/* ================================================================
+   3. SIDEBAR INTERATIVA — Técnica da Atividade 04
+   Usa input:checkbox escondido + label como botão + seletor ~
+   ================================================================ */
+
+/* Esconde o checkbox completamente — só o label fica visível */
+.sidebar-toggle {
+  display: none; /* remove da renderização e do fluxo */
+}
+
+/* Botão ☰ que abre/fecha a sidebar */
+.btn-menu {
+  position:   fixed;          /* position:fixed → fica na mesma posição ao rolar */
+  top:        16px;           /* 16px do topo */
+  left:       16px;           /* 16px da esquerda */
+  z-index:    1000;           /* z-index alto → fica sobre outros elementos */
+  background: var(--cor-primaria);
+  color:      #fff;
+  padding:    8px 14px;
+  border-radius: var(--raio-base);
+  cursor:     pointer;        /* cursor de mão ao passar o mouse */
+  font-size:  1rem;
+  font-weight: 700;
+  transition: background var(--transicao-rapida);
+  user-select: none;          /* impede seleção de texto ao clicar */
+  box-shadow: var(--sombra-base);
+}
+
+/* :hover no label do botão */
+.btn-menu:hover {
+  background: var(--cor-secundaria); /* cor diferente no hover */
+}
+
+/* A sidebar: painel lateral que começa FORA da tela */
+.sidebar {
+  position:   fixed;           /* position:fixed → não rola com a página */
+  top:        0;               /* começa no topo */
+  left:       calc(-1 * var(--largura-sidebar)); /* começa fora: -240px */
+  width:      var(--largura-sidebar);            /* largura da sidebar */
+  height:     100vh;           /* 100vh = 100% da altura da viewport */
+  background: var(--cor-primaria);               /* fundo azul escuro */
+  color:      #fff;
+  padding:    60px 0 20px;     /* espaço no topo para o botão não sobrepor */
+  overflow-y: auto;            /* scroll vertical se conteúdo for muito longo */
+  transition: left var(--transicao-base); /* anima a entrada/saída suavemente */
+  z-index:    900;             /* abaixo do botão (z-index:1000) mas acima do resto */
+  box-shadow: var(--sombra-lg);
+}
+
+/* 
+  TÉCNICA DO :checked:
+  Quando o #toggle-sidebar (checkbox) está :checked (marcado),
+  o seletor ~ seleciona o irmão geral .sidebar e muda left para 0.
+  Isso faz a sidebar "entrar" na tela com a transição animada.
+*/
+#toggle-sidebar:checked ~ .sidebar {
+  left: 0; /* entra na tela — a transition:left anima o movimento */
+}
+
+/* Quando sidebar abre, o wrapper é empurrado para a direita */
+#toggle-sidebar:checked ~ .wrapper {
+  margin-left: var(--largura-sidebar);    /* empurra o conteúdo */
+  transition:  margin-left var(--transicao-base); /* com animação */
+}
+
+/* Título interno da sidebar */
+.sidebar-titulo {
+  color:         #a8c8f8;     /* azul claro dentro do fundo escuro */
+  font-size:     1rem;
+  padding:       0 var(--espacamento-base);
+  margin-bottom: var(--espacamento-sm);
+  text-transform: uppercase;  /* texto em maiúsculo */
+  letter-spacing: 0.08em;     /* espaçamento entre letras */
+}
+
+/* Lista de links da sidebar */
+.sidebar ul {
+  list-style: none;           /* remove marcadores da lista */
+  padding:    0;
+  margin:     0;
+}
+
+/* Link da sidebar */
+.sidebar a {
+  display:      block;        /* display:block → ocupa a linha inteira, facilita clique */
+  padding:      10px var(--espacamento-base);
+  color:        #cce0ff;      /* cor dos links dentro da sidebar */
+  font-size:    0.9rem;
+  border-left:  3px solid transparent; /* borda esquerda invisível (vai aparecer no hover) */
+  transition:   all var(--transicao-rapida);
+}
+
+/* :hover nos links da sidebar */
+.sidebar a:hover {
+  background:   rgba(255,255,255,0.1); /* fundo semi-transparente */
+  color:        #ffffff;
+  border-left-color: var(--cor-destaque); /* borda laranja aparece */
+  text-decoration: none;
+  padding-left: 20px;                    /* indenta um pouco no hover */
+}
+
+
+/* ================================================================
+   4. WRAPPER E LAYOUT GERAL
+   ================================================================ */
+
+/* Wrapper: envolve todo o conteúdo principal */
+.wrapper {
+  margin-left:  0;            /* começa sem margem */
+  transition:   margin-left var(--transicao-base); /* anima quando sidebar abre */
+  min-height:   100vh;        /* mínimo de 100% da altura da viewport */
+  display:      flex;         /* display:flex para layout de coluna */
+  flex-direction: column;     /* filhos empilhados verticalmente */
+}
+
+/* main cresce para preencher o espaço entre header e footer */
+main {
+  flex-grow: 1;               /* flex-grow:1 → ocupa todo espaço restante */
+  max-width: 1100px;          /* largura máxima do conteúdo */
+  width:     100%;
+  margin:    0 auto;          /* centraliza horizontalmente */
+  padding:   var(--espacamento-md) var(--espacamento-base);
+}
+
+
+/* ================================================================
+   5. HEADER — Cabeçalho semântico
+   ================================================================ */
+
+header {
+  background:    var(--cor-primaria);   /* fundo azul escuro */
+  color:         #ffffff;               /* texto branco (propriedade herdável!) */
+  padding:       var(--espacamento-md) var(--espacamento-lg);
+  padding-left:  120px;                 /* espaço para o botão do menu (position:fixed) */
+  /* Flexbox no header para h1 e nav lado a lado */
+  display:       flex;
+  align-items:   center;                /* alinha verticalmente ao centro */
+  justify-content: space-between;       /* h1 na esquerda, nav na direita */
+  flex-wrap:     wrap;                  /* quebra se a tela for pequena */
+  gap:           var(--espacamento-base);
+  position:      sticky;               /* position:sticky → gruda no topo ao rolar */
+  top:           0;                    /* ponto de "grudar": 0px do topo */
+  z-index:       800;                  /* acima do conteúdo, abaixo do botão menu */
+  box-shadow:    var(--sombra-base);
+}
+
+/* h1 dentro do header: herda a cor #fff do header */
+header h1 {
+  color:      #ffffff;         /* branco (reforço, pois h1 geral usa --cor-primaria) */
+  font-size:  1.6rem;
+  margin:     0;
+  font-weight: 800;
+}
+
+/* p dentro do header */
+header p {
+  color:      #a8c8f8;         /* azul claro para texto secundário */
+  font-size:  0.85rem;
+  margin:     0;
+  max-width:  none;
+}
+
+
+/* ================================================================
+   6. NAVEGAÇÃO
+   ================================================================ */
+
+/* Nav principal no header */
+.nav-principal ul {
+  display:     flex;            /* itens de lista em linha */
+  list-style:  none;            /* sem marcadores */
+  gap:         var(--espacamento-sm);
+  flex-wrap:   wrap;
+  padding:     0;
+  margin:      0;
+}
+
+.nav-principal a {
+  color:          #cce0ff;
+  padding:        6px 12px;
+  border-radius:  var(--raio-full);
+  font-size:      0.9rem;
+  font-weight:    600;
+  transition:     all var(--transicao-rapida);
+  border:         1px solid transparent;
+}
+
+/* :hover nos links de navegação */
+.nav-principal a:hover {
+  background: rgba(255,255,255,0.15);
+  color:      #ffffff;
+  border-color: rgba(255,255,255,0.3);
+  text-decoration: none;
+}
+
+
+/* ================================================================
+   7. SEÇÕES E ARTIGOS
+   ================================================================ */
+
+/* Seções semânticas — espaçamento entre elas */
+section {
+  margin-bottom: var(--espacamento-xl);    /* espaço entre seções */
+  padding-top:   var(--espacamento-md);    /* espaço interno no topo */
+}
+
+/* h2 das seções: com borda inferior decorativa */
+section > h2 {
+  font-size:     1.9rem;
+  padding-bottom: var(--espacamento-sm);
+  margin-bottom:  var(--espacamento-md);
+  border-bottom:  3px solid var(--cor-secundaria); /* linha decorativa abaixo */
+  display:        flex;
+  align-items:    center;
+  gap:            var(--espacamento-sm);
+}
+
+/* Cards de conceito (articles) */
+.conceito-card {
+  background:    var(--cor-card);          /* fundo branco */
+  border-radius: var(--raio-lg);           /* cantos arredondados grandes */
+  padding:       var(--espacamento-md);    /* espaçamento interno */
+  margin-bottom: var(--espacamento-base);  /* espaço entre cards */
+  box-shadow:    var(--sombra-sm);         /* sombra sutil */
+  border-left:   4px solid var(--cor-secundaria); /* borda esquerda decorativa */
+  transition:    box-shadow var(--transicao-base), transform var(--transicao-base);
+}
+
+/* :hover nos cards — elevação visual */
+.conceito-card:hover {
+  box-shadow: var(--sombra-lg);            /* sombra maior */
+  transform:  translateY(-2px);           /* levanta 2px */
+}
+
+/* aside.info-box — caixa de informação/dica */
+.info-box {
+  background:    #e8f4fd;                  /* fundo azul muito claro */
+  border-left:   4px solid var(--cor-secundaria);
+  border-radius: var(--raio-base);
+  padding:       var(--espacamento-base);
+  margin-bottom: var(--espacamento-base);
+}
+
+.info-box p {
+  margin: 0;
+  color:  var(--cor-texto);
+}
+
+.info-box h4 {
+  color:  var(--cor-primaria);
+  margin-bottom: var(--espacamento-xs);
+}
+
+
+/* ================================================================
+   8. TABELAS
+   ================================================================ */
+
+/* Container com scroll para tabelas em telas pequenas */
+.tabela-scroll {
+  overflow-x: auto;          /* scroll horizontal quando necessário */
+  margin:     1em 0;
+}
+
+/* Tabela base */
+table {
+  width:           100%;     /* ocupa toda a largura disponível */
+  border-collapse: collapse; /* remove espaço duplo entre bordas */
+  font-size:       0.9rem;
+}
+
+/* Células de cabeçalho */
+th {
+  background:  var(--cor-primaria);  /* fundo azul */
+  color:       #ffffff;               /* texto branco */
+  padding:     10px 14px;
+  text-align:  left;
+  font-weight: 600;
+}
+
+/* Células de dados */
+td {
+  padding:       8px 14px;
+  border-bottom: 1px solid var(--cor-borda); /* linha separadora */
+}
+
+/* :nth-child(odd) → linhas ímpares com fundo levemente cinza */
+tr:nth-child(odd) td {
+  background: #f7faff;       /* zebrado: cinza alternado */
+}
+
+/* tr:hover → linha com fundo ao passar o mouse */
+tr:hover td {
+  background: #e8f0fe;       /* fundo azul suave no hover */
+}
+
+/* Cantos arredondados na tabela (cabeçalho) */
+th:first-child { border-radius: var(--raio-sm) 0 0 0; } /* canto superior esquerdo */
+th:last-child  { border-radius: 0 var(--raio-sm) 0 0; } /* canto superior direito */
+
+
+/* ================================================================
+   9. BOX MODEL DEMO
+   ================================================================ */
+
+/* Container externo da demonstração do box model */
+.demo-boxmodel {
+  display:     flex;
+  justify-content: center;
+  margin: 1em 0;
+}
+
+/* Camada margin — mais externa */
+.box-margin {
+  background:  #ffddc1;        /* laranja muito claro para margin */
+  padding:     25px;           /* espaço = simula a margin */
+  text-align:  center;
+  font-size:   0.75rem;
+  color:       #333;
+  border-radius: var(--raio-base);
+}
+
+/* Camada border */
+.box-border {
+  background:  #c8e6c9;        /* verde claro para border */
+  padding:     20px;
+  border:      4px solid #388e3c; /* borda real visível */
+}
+
+/* Camada padding */
+.box-padding {
+  background:  #bbdefb;        /* azul claro para padding */
+  padding:     20px;
+}
+
+/* Camada content — mais interna */
+.box-content {
+  background:  var(--cor-primaria); /* azul escuro para content */
+  color:       #fff;
+  padding:     20px 30px;
+  font-weight: bold;
+  border-radius: var(--raio-sm);
+}
+
+/* Demo de box-sizing */
+.demo-boxsizing {
+  display: flex;
+  gap:     20px;
+  flex-wrap: wrap;
+  margin:  1em 0;
+}
+
+/* content-box (padrão) — width NÃO inclui padding */
+.box-content-box {
+  box-sizing:  content-box;    /* padrão — padding soma à largura */
+  width:       200px;          /* ocupa 200px + 40px de padding = 240px total */
+  padding:     20px;
+  background:  #ffcdd2;        /* vermelho claro */
+  border:      2px solid #e53935;
+  font-size:   0.8rem;
+  border-radius: var(--raio-sm);
+}
+
+/* border-box — width INCLUI padding e border */
+.box-border-box {
+  box-sizing:  border-box;     /* padding e border ficam DENTRO da largura */
+  width:       200px;          /* ocupa EXATAMENTE 200px — padding já está dentro */
+  padding:     20px;
+  background:  #c8e6c9;        /* verde claro */
+  border:      2px solid #388e3c;
+  font-size:   0.8rem;
+  border-radius: var(--raio-sm);
+}
+
+
+/* ================================================================
+   10. DISPLAY DEMO
+   ================================================================ */
+
+.demo-display {
+  margin: 1em 0;
+}
+
+/* display: block — ocupa a linha inteira */
+.demo-block {
+  display:       block;         /* ocupa toda a largura */
+  background:    #bbdefb;
+  padding:       10px;
+  margin-bottom: 4px;
+  border-radius: var(--raio-sm);
+  font-size:     0.85rem;
+}
+
+.demo-inline-wrapper,
+.demo-inline-block-wrapper {
+  margin: 8px 0;
+}
+
+/* display: inline — só o tamanho do conteúdo, mesma linha */
+.demo-inline {
+  display:       inline;        /* não inicia nova linha, sem width/height */
+  background:    #f8bbd0;       /* rosa */
+  padding:       4px 8px;
+  margin:        2px;
+  border-radius: var(--raio-sm);
+  font-size:     0.85rem;
+}
+
+/* display: inline-block — mesma linha + aceita width e height */
+.demo-inline-block {
+  display:       inline-block;  /* mesma linha + permite width/height */
+  background:    #c8e6c9;       /* verde */
+  padding:       8px 14px;
+  margin:        2px;
+  border-radius: var(--raio-sm);
+  font-size:     0.85rem;
+  width:         130px;         /* inline-block aceita largura fixa */
+  text-align:    center;
+}
+
+
+/* ================================================================
+   11. POSITION DEMO
+   ================================================================ */
+
+/* Container com position:relative para que o absolute se posicione nele */
+.demo-position-container {
+  position: relative;          /* ESSENCIAL: o absolute filho se posiciona aqui */
+  background: #f7f7f7;
+  border:  2px dashed var(--cor-borda);
+  padding: 60px 20px 20px;
+  min-height: 200px;
+  border-radius: var(--raio-base);
+  margin: 1em 0;
+}
+
+/* position: static — comportamento padrão */
+.pos-static {
+  position: static;            /* fluxo normal, sem deslocamento */
+  background: #bbdefb;
+  padding: 8px;
+  margin-bottom: 8px;
+  border-radius: var(--raio-sm);
+  font-size: 0.8rem;
+}
+
+/* position: relative — desloca, mas mantém espaço original */
+.pos-relative {
+  position: relative;          /* relativo à posição natural */
+  top:  10px;                  /* desce 10px da posição original */
+  left: 15px;                  /* move 15px para a direita */
+  background: #c8e6c9;
+  padding: 8px;
+  margin-bottom: 8px;
+  border-radius: var(--raio-sm);
+  font-size: 0.8rem;
+}
+
+/* position: absolute — sai do fluxo, posiciona em relação ao pai relative */
+.pos-absolute {
+  position: absolute;          /* fora do fluxo! Posiciona em relação ao .demo-position-container */
+  top:   10px;                 /* 10px do topo do container */
+  right: 10px;                 /* 10px da direita do container */
+  background: #ffe0b2;         /* laranja claro */
+  padding: 6px 10px;
+  border-radius: var(--raio-sm);
+  font-size: 0.75rem;
+  max-width: 200px;
+}
+
+/* position: sticky — gruda ao rolar até certo ponto */
+.pos-sticky-demo {
+  position: sticky;            /* age como relative até atingir top:0 no scroll */
+  top: 0;                      /* gruda no topo quando o scroll chega aqui */
+  background: var(--cor-destaque);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: var(--raio-sm);
+  font-size: 0.8rem;
+  z-index: 10;
+  margin-bottom: 8px;
+}
+
+.pos-filler {
+  background: #f0f0f0;
+  padding: 8px;
+  margin-bottom: 4px;
+  border-radius: var(--raio-sm);
+  font-size: 0.8rem;
+}
+
+
+/* ================================================================
+   12. SELETORES DEMO
+   ================================================================ */
+
+/* Seletor de tag — todos os p dentro de .demo-tag-p */
+.demo-tag-p {
+  background: #e3f2fd;
+  padding: 8px;
+  border-radius: var(--raio-sm);
+}
+
+/* Seletor de classe */
+.seletor-classe-demo {
+  background: #e8f5e9;
+  padding: 8px;
+  border-radius: var(--raio-sm);
+  margin-top: 4px;
+}
+
+/* Seletor de ID — apenas o elemento com id="seletor-id-demo" */
+#seletor-id-demo {
+  background: #fff3e0;
+  padding: 8px;
+  border-radius: var(--raio-sm);
+  margin-top: 4px;
+  font-size: 0.85rem;
+}
+
+/* Seletor universal no demo */
+.seletor-universal-demo {
+  background: #fce4ec;
+  padding: 8px;
+  border-radius: var(--raio-sm);
+  margin-top: 4px;
+}
+
+/* Seletor descendente ( ) — todos os p dentro de .demo-combinadores */
+.demo-combinadores p {
+  color:      var(--cor-primaria);    /* azul */
+  padding:    4px 0;
+  font-size:  0.85rem;
+}
+
+/* Seletor filho direto (>) — apenas filhos diretos da div */
+.demo-combinadores > p {
+  font-weight: bold;           /* negrito nos filhos diretos */
+  font-style:  normal;
+}
+
+/* Seletor irmão adjacente (+) — primeiro h4 logo após .demo-combinadores */
+.demo-combinadores + h4 {
+  color:        var(--cor-destaque);  /* laranja */
+  font-size:    0.9rem;
+}
+
+/* Seletor irmãos gerais (~) — todos os .p-apos-h4-demo após o h4 */
+.h4-apos-div ~ .p-apos-h4-demo {
+  font-style:  italic;         /* itálico em todos os irmãos gerais */
+  color:       var(--cor-texto-leve);
+  font-size:   0.85rem;
+}
+
+/* Seletor de atributo [class^=]: começa com */
+.demo-atributo [class^="col-"] {
+  background:  #e3f2fd;
+  padding:     8px;
+  margin:      4px 0;
+  border-left: 3px solid var(--cor-secundaria);
+  border-radius: var(--raio-sm);
+  font-size:   0.85rem;
+}
+
+/* Seletor de atributo [type^="te"]: input cujo type começa com "te" */
+[type^="te"].demo-input-attr {
+  border:      2px solid var(--cor-destaque); /* borda laranja */
+  padding:     6px;
+  border-radius: var(--raio-sm);
+  width:       100%;
+  font-size:   0.85rem;
+}
+
+/* Demonstração de headings */
+.demo-headings {
+  display:    flex;
+  flex-direction: column;
+  gap:        4px;
+  padding:    10px;
+  background: #f7f9fc;
+  border-radius: var(--raio-base);
+}
+
+/* Simula os tamanhos h1-h6 sem usar as tags reais */
+.demo-h1 { font-size: 2em;    font-weight: bold; color: var(--cor-primaria); }
+.demo-h2 { font-size: 1.6em;  font-weight: bold; color: var(--cor-primaria); }
+.demo-h3 { font-size: 1.3em;  font-weight: bold; color: var(--cor-primaria); }
+.demo-h4 { font-size: 1.1em;  font-weight: bold; color: var(--cor-primaria); }
+.demo-h5 { font-size: 0.95em; font-weight: bold; color: var(--cor-primaria); }
+.demo-h6 { font-size: 0.85em; font-weight: bold; color: var(--cor-texto-leve); }
+
+
+/* ================================================================
+   13. PSEUDO-CLASSES DEMO
+   ================================================================ */
+
+/* :hover — botão muda cor ao passar o mouse */
+.btn-pseudo-hover {
+  padding:       10px 20px;
+  background:    var(--cor-secundaria);
+  color:         #fff;
+  border:        none;
+  border-radius: var(--raio-base);
+  cursor:        pointer;
+  margin:        4px;
+  font-size:     0.9rem;
+  transition:    all var(--transicao-rapida);
+}
+
+.btn-pseudo-hover:hover {
+  background:    var(--cor-primaria);    /* escurece no hover */
+  transform:     translateY(-2px);       /* sobe 2px */
+  box-shadow:    var(--sombra-base);
+}
+
+/* :active — botão muda ao ser clicado */
+.btn-pseudo-active {
+  padding:       10px 20px;
+  background:    var(--cor-destaque);
+  color:         #fff;
+  border:        none;
+  border-radius: var(--raio-base);
+  cursor:        pointer;
+  margin:        4px;
+  font-size:     0.9rem;
+  transition:    transform 0.1s;
+}
+
+.btn-pseudo-active:active {
+  transform: scale(0.95);    /* encolhe ao clicar */
+  background: #c74a1a;       /* cor mais escura enquanto clicado */
+}
+
+/* :focus — input com borda de foco */
+.input-pseudo-focus {
+  padding:       8px 12px;
+  border:        2px solid var(--cor-borda);
+  border-radius: var(--raio-base);
+  font-size:     0.9rem;
+  outline:       none;       /* remove outline padrão para usar o nosso */
+  transition:    border-color var(--transicao-rapida), box-shadow var(--transicao-rapida);
+  width:         100%;
+  margin:        4px 0;
+}
+
+.input-pseudo-focus:focus {
+  border-color: var(--cor-secundaria);    /* borda azul ao focar */
+  box-shadow:   0 0 0 3px rgba(46,117,182,.2); /* brilho ao redor */
+}
+
+/* :focus-within — div pai ganha estilo quando filho recebe foco */
+.div-focus-within {
+  padding:       10px;
+  border:        2px solid var(--cor-borda);
+  border-radius: var(--raio-base);
+  margin:        8px 0;
+  transition:    border-color var(--transicao-rapida), background var(--transicao-rapida);
+}
+
+.div-focus-within:focus-within {
+  border-color: var(--cor-sucesso);       /* verde quando filho está em foco */
+  background:   #f0fff4;
+}
+
+/* :nth-child — lista zebrada */
+.lista-nth {
+  list-style: none;
+  padding:    0;
+}
+
+.lista-nth li {
+  padding:    8px 12px;
+  border-radius: var(--raio-sm);
+  font-size:  0.9rem;
+}
+
+/* :first-child — primeiro item */
+.lista-nth li:first-child {
+  background:  #bbdefb;           /* azul claro */
+  font-weight: bold;
+}
+
+/* :last-child — último item */
+.lista-nth li:last-child {
+  background: #c8e6c9;            /* verde claro */
+  font-weight: bold;
+}
+
+/* :nth-child(odd) — itens ímpares (1, 3, 5...) */
+.lista-nth li:nth-child(odd) {
+  background: #f5f5f5;            /* cinza claro */
+}
+
+/* :nth-child(even) — itens pares (2, 4, 6...) */
+.lista-nth li:nth-child(even) {
+  background: #e3e3e3;            /* cinza um pouco mais escuro */
+}
+
+/* :first-child e :last-child sobrescrevem as regras acima para os extremos */
+
+/* :not() — todos os li EXCETO os com .excluido */
+.lista-not li:not(.excluido) {
+  color:       var(--cor-sucesso);  /* verde apenas nos não-excluídos */
+  font-weight: bold;
+}
+
+.lista-not li.excluido {
+  color:      var(--cor-texto-leve); /* cinza nos excluídos */
+  font-style: italic;
+}
+
+/* Pseudo-classes de formulário */
+.form-pseudo {
+  display:        flex;
+  flex-direction: column;
+  gap:            10px;
+}
+
+.campo-form {
+  display:        flex;
+  flex-direction: column;
+  gap:            4px;
+}
+
+.campo-form label {
+  font-size:  0.85rem;
+  font-weight: 600;
+  color:      var(--cor-texto);
+}
+
+/* :required — campo obrigatório (antes de interação) */
+.input-validacao {
+  padding:    8px 12px;
+  border:     2px solid var(--cor-borda);
+  border-radius: var(--raio-base);
+  font-size:  0.9rem;
+  outline:    none;
+  transition: border-color var(--transicao-rapida);
+}
+
+/* :valid — quando o e-mail tem formato válido */
+.input-validacao:valid {
+  border-color: var(--cor-sucesso);   /* verde quando válido */
+  background:   #f0fff4;
+}
+
+/* :invalid — quando o e-mail tem formato inválido (e foi modificado) */
+.input-validacao:invalid:not(:placeholder-shown) {
+  border-color: var(--cor-erro);      /* vermelho quando inválido e preenchido */
+  background:   #fff5f5;
+}
+
+/* :disabled — campo desabilitado */
+.input-disabled:disabled {
+  background:  #f5f5f5;              /* cinza */
+  color:       #aaa;
+  cursor:      not-allowed;          /* cursor proibido */
+  border:      1px solid #ddd;
+  padding:     8px 12px;
+  border-radius: var(--raio-base);
+}
+
+/* :in-range — número dentro do intervalo */
+.input-range {
+  padding:    8px 12px;
+  border:     2px solid var(--cor-borda);
+  border-radius: var(--raio-base);
+  width:      120px;
+  transition: border-color var(--transicao-rapida);
+}
+
+.input-range:in-range {
+  border-color: var(--cor-sucesso);   /* verde quando entre 1 e 10 */
+}
+
+.input-range:out-of-range {
+  border-color: var(--cor-erro);      /* vermelho quando fora do intervalo */
+}
+
+
+/* ================================================================
+   14. PSEUDO-ELEMENTOS DEMO
+   ================================================================ */
+
+/* ::first-letter — primeira letra maior (drop cap) */
+.demo-first-letter::first-letter {
+  font-size:    3em;             /* bem maior que o resto */
+  font-weight:  bold;
+  color:        var(--cor-primaria);
+  float:        left;            /* flutua à esquerda para o texto envolver */
+  line-height:  0.8;             /* ajusta alinhamento */
+  margin-right: 6px;
+  margin-top:   4px;
+}
+
+/* ::first-line — primeira linha com cor diferente */
+.demo-first-line::first-line {
+  color:       var(--cor-secundaria);  /* azul na primeira linha */
+  font-weight: bold;
+}
+
+/* ::before — insere conteúdo ANTES do elemento via CSS */
+.demo-before-after::before {
+  content:      "▶ ";               /* content é OBRIGATÓRIO em before/after */
+  color:        var(--cor-destaque); /* laranja */
+  font-size:    1.1em;
+}
+
+/* ::after — insere conteúdo DEPOIS do elemento via CSS */
+.demo-before-after::after {
+  content:      " ◀";
+  color:        var(--cor-destaque);
+  font-size:    1.1em;
+}
+
+/* ::selection — estiliza texto selecionado pelo usuário */
+.demo-selection::selection {
+  background: var(--cor-destaque);  /* fundo laranja na seleção */
+  color:      #ffffff;              /* texto branco */
+}
+
+/* Destaque inline com span */
+.destaque-inline {
+  background:    #fff3cd;            /* fundo amarelo */
+  padding:       2px 6px;
+  border-radius: var(--raio-sm);
+  border:        1px solid #f0c04e;
+  font-style:    italic;
+}
+
+
+/* ================================================================
+   15. CASCATEAMENTO DEMO
+   ================================================================ */
+
+/* Seletor de tag: especificidade 1 */
+.demo-cascade p {
+  color: var(--cor-texto);   /* cinza escuro */
+  padding: 6px;
+  border-radius: var(--raio-sm);
+  font-size: 0.9rem;
+  background: #f0f0f0;
+}
+
+/* Seletor de classe: especificidade 10 — VENCE sobre o de tag */
+.p-classe-verde {
+  color:      var(--cor-sucesso) !important; /* verde */
+  background: #e8f5e9;
+}
+
+/* Seletor de ID: especificidade 100 — VENCE sobre classe e tag */
+#p-id-azul {
+  color:      var(--cor-primaria) !important; /* azul */
+  background: #e3f2fd;
+  font-weight: bold;
+}
+
+/* Demonstração de herança */
+.demo-heranca {
+  background: #fff8e1;
+  padding:    12px;
+  border-radius: var(--raio-base);
+}
+
+/* color e font são herdáveis — filhos .demo-heranca herdam */
+.demo-heranca p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5em;
+}
+
+/* :is() — agrupa múltiplos seletores elegantemente */
+:is(.conceito-card, .info-box) .demo-is-filho {
+  color:         var(--cor-destaque);   /* laranja no filho de .conceito-card ou .info-box */
+  font-style:    italic;
+  font-size:     0.85rem;
+}
+
+
+/* ================================================================
+   16. CORES, FONTES E BACKGROUND DEMO
+   ================================================================ */
+
+/* Demonstração de formatos de cor */
+.demo-cores {
+  display:   flex;
+  flex-wrap: wrap;
+  gap:       8px;
+  margin:    1em 0;
+}
+
+/* Cada span demonstra uma forma de declarar cor */
+.demo-cores span {
+  padding:       8px 12px;
+  border-radius: var(--raio-base);
+  font-size:     0.8rem;
+  font-weight:   600;
+  color:         #fff;
+}
+
+.cor-nome     { background: red;                      color: #fff; }
+.cor-hex      { background: #1F4E79; }
+.cor-rgb      { background: rgb(255, 87, 51); }
+.cor-rgba     { background: rgba(31, 78, 121, 0.8); }
+.cor-hsl      { background: hsl(210, 60%, 30%); }
+.cor-hsla     { background: hsla(210, 60%, 30%, 0.7); }
+
+/* Demonstração de propriedades de fonte */
+.demo-font-family  { font-family: Georgia, serif; }
+.demo-font-size-lg { font-size: 1.5em; }
+.demo-font-size-sm { font-size: 0.8em; }
+.demo-font-bold    { font-weight: bold; }        /* ou font-weight: 700 */
+.demo-font-light   { font-weight: 300; }
+.demo-align-center { text-align: center; max-width: none; }
+.demo-align-right  { text-align: right;  max-width: none; }
+.demo-align-justify{ text-align: justify; }
+
+/* Demonstração de background */
+.demo-bg-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); /* responsivo automático */
+  gap:    10px;
+  margin: 1em 0;
+}
+
+.demo-bg-grid div {
+  padding:       20px 10px;
+  border-radius: var(--raio-base);
+  color:         #fff;
+  font-size:     0.8rem;
+  text-align:    center;
+  min-height:    80px;
+  display:       flex;
+  align-items:   center;
+  justify-content: center;
+}
+
+/* background-color */
+.bg-cor      { background-color: var(--cor-primaria); }
+
+/* background-image com URL */
+.bg-imagem   {
+  background-image:    url('https://picsum.photos/200/100?random=5');
+  background-size:     cover;          /* cobre todo o container */
+  background-position: center;         /* centraliza */
+  background-repeat:   no-repeat;      /* não repete */
+  color: #fff;
+  text-shadow: 1px 1px 3px #000;
+}
+
+/* linear-gradient */
+.bg-gradiente {
+  background: linear-gradient(135deg, var(--cor-primaria), var(--cor-destaque));
+}
+
+/* background-size: cover */
+.bg-cover {
+  background: radial-gradient(circle, var(--cor-secundaria), var(--cor-primaria));
+}
+
+/* Imagem de exemplo */
+.img-exemplo {
+  border-radius: var(--raio-base);
+  box-shadow:    var(--sombra-base);
+  margin: 10px 0;
+}
+
+
+/* ================================================================
+   17. FLEXBOX — Demonstrações e Atividade 03
+   ================================================================ */
+
+/* Container base de demonstração do Flexbox */
+.flex-demo {
+  display:       flex;           /* ATIVA o Flexbox no container */
+  gap:           8px;            /* espaço entre os filhos */
+  padding:       12px;
+  background:    #f7f9fc;
+  border:        1px solid var(--cor-borda);
+  border-radius: var(--raio-base);
+  margin:        8px 0;
+  min-height:    60px;
+}
+
+/* Itens filhos dos containers flexbox */
+.flex-item {
+  background:    var(--cor-primaria);   /* azul escuro */
+  color:         #fff;
+  padding:       10px 14px;
+  border-radius: var(--raio-sm);
+  font-size:     0.85rem;
+  font-weight:   600;
+  text-align:    center;
+  white-space:   nowrap;        /* evita quebra de linha dentro do item */
+}
+
+/* flex-direction: row (padrão) */
+.flex-row          { flex-direction: row; }
+/* flex-direction: row-reverse */
+.flex-row-reverse  { flex-direction: row-reverse; }
+/* flex-direction: column */
+.flex-column       { flex-direction: column; }
+/* flex-direction: column-reverse */
+.flex-column-reverse { flex-direction: column-reverse; }
+
+/* justify-content — alinha no EIXO PRINCIPAL */
+.jc-flex-start    { justify-content: flex-start; }    /* agrupa no início */
+.jc-flex-end      { justify-content: flex-end; }      /* agrupa no fim */
+.jc-center        { justify-content: center; }         /* centraliza */
+.jc-space-between { justify-content: space-between; }  /* espaço entre (sem nas bordas) */
+.jc-space-around  { justify-content: space-around; }   /* espaço ao redor (metade nas bordas) */
+.jc-space-evenly  { justify-content: space-evenly; }   /* espaço igual em todos os lados */
+
+/* align-items — alinha no EIXO TRANSVERSAL */
+.ai-stretch   { align-items: stretch; }   /* estica para preencher (padrão) */
+.ai-center    { align-items: center; }    /* centraliza verticalmente */
+.ai-flex-start{ align-items: flex-start; }
+
+/* Container com altura para demonstrar align-items */
+.flex-demo-tall {
+  display:    flex;
+  gap:        8px;
+  padding:    12px;
+  background: #f7f9fc;
+  border:     1px solid var(--cor-borda);
+  border-radius: var(--raio-base);
+  margin:     8px 0;
+  height:     100px;             /* altura fixa para demo do align-items */
+}
+
+/* Itens com alturas diferentes para demonstrar align-items */
+.ai-item-short  { padding:  6px 12px; background: var(--cor-primaria);   color:#fff; border-radius:var(--raio-sm); font-size:0.8rem; }
+.ai-item-medium { padding: 14px 12px; background: var(--cor-secundaria); color:#fff; border-radius:var(--raio-sm); font-size:0.8rem; }
+.ai-item-tall   { padding: 22px 12px; background: var(--cor-destaque);   color:#fff; border-radius:var(--raio-sm); font-size:0.8rem; }
+
+/* flex-wrap */
+.flex-nowrap     { flex-wrap: nowrap; }    /* tudo na mesma linha (pode encolher) */
+.flex-wrap-demo  { flex-wrap: wrap; }      /* quebra para nova linha quando necessário */
+
+/* Itens com largura mínima para forçar quebra de linha */
+.flex-item-wrap {
+  background:    var(--cor-secundaria);
+  color:         #fff;
+  padding:       8px 12px;
+  border-radius: var(--raio-sm);
+  min-width:     100px;           /* largura mínima força o wrap */
+  text-align:    center;
+  font-size:     0.85rem;
+}
+
+/* flex-grow */
+.fg-1 { flex-grow: 1; }    /* ocupa 1 parte do espaço livre */
+.fg-2 { flex-grow: 2; }    /* ocupa 2 partes — o dobro */
+
+/* flex-shrink */
+.fs-0 { flex-shrink: 0; }  /* NÃO encolhe quando falta espaço */
+.fs-1 { flex-shrink: 1; }  /* encolhe proporcionalmente (padrão) */
+
+/* flex-basis */
+.fb-100  { flex-basis: 100px; }   /* parte com 100px de base */
+.fb-200  { flex-basis: 200px; }   /* parte com 200px de base */
+.fb-auto { flex-basis: auto; }    /* base automática (tamanho do conteúdo) */
+
+/* order — reordena visualmente sem alterar o HTML */
+.ord-1 { order: 1; }    /* aparece primeiro */
+.ord-2 { order: 2; }    /* aparece segundo */
+.ord-3 { order: 3; }    /* aparece terceiro */
+
+/* align-self — sobrescreve align-items para um item específico */
+.as-flex-start { align-self: flex-start; }    /* no topo */
+.as-center     { align-self: center; }        /* centralizado */
+.as-flex-end   { align-self: flex-end; }      /* na base */
+.as-stretch    { align-self: stretch; }       /* estica (padrão) */
+
+/* --- ATIVIDADE 03: Layout de Cards com Flexbox --- */
+
+/* Container dos cards: flex com wrap para responsividade */
+.cards-container {
+  display:         flex;             /* ativa Flexbox */
+  gap:             var(--espacamento-base);
+  flex-wrap:       wrap;             /* quebra para nova linha em telas pequenas */
+  margin-top:      var(--espacamento-base);
+}
+
+/* Cada card: Flexbox em coluna internamente */
+.card-atividade {
+  display:         flex;
+  flex-direction:  column;           /* itens empilhados verticalmente */
+  flex:            1 1 250px;        /* grow:1, shrink:1, basis:250px */
+  /* flex: combina flex-grow + flex-shrink + flex-basis */
+  background:      var(--cor-card);
+  border-radius:   var(--raio-lg);
+  padding:         var(--espacamento-md);
+  box-shadow:      var(--sombra-base);
+  border-top:      4px solid var(--cor-secundaria);
+  transition:      transform var(--transicao-base), box-shadow var(--transicao-base);
+}
+
+.card-atividade:hover {
+  transform:   translateY(-4px);     /* sobe 4px no hover */
+  box-shadow:  var(--sombra-lg);
+}
+
+.card-atividade h4 {
+  color:        var(--cor-primaria);
+  margin-bottom: var(--espacamento-sm);
+  font-size:    1.1rem;
+}
+
+/* flex-grow: 1 no parágrafo → ocupa o espaço restante, empurrando o botão para baixo */
+.card-atividade p {
+  flex-grow:    1;                   /* CRESCE para preencher o espaço disponível */
+  color:        var(--cor-texto);
+  font-size:    0.9rem;
+  max-width:    none;
+}
+
+/* Botão do card: sempre fica no fundo graças ao flex-grow no p acima */
+.btn-card {
+  display:         block;            /* bloco para ocupar largura total */
+  text-align:      center;
+  background:      var(--cor-primaria);
+  color:           #fff;
+  padding:         10px 16px;
+  border-radius:   var(--raio-full); /* pill shape */
+  font-weight:     600;
+  font-size:       0.9rem;
+  transition:      background var(--transicao-rapida), transform var(--transicao-rapida);
+  margin-top:      var(--espacamento-sm);
+}
+
+.btn-card:hover {
+  background:  var(--cor-destaque);  /* laranja no hover */
+  transform:   translateY(-1px);
+  text-decoration: none;
+  color: #fff;
+}
+
+/* Grid de 3 colunas e 2 colunas para layouts */
+.grid-3col {
+  display:               grid;
+  grid-template-columns: repeat(3, 1fr);   /* 3 colunas iguais */
+  gap:                   var(--espacamento-base);
+}
+
+.grid-2col {
+  display:               grid;
+  grid-template-columns: repeat(2, 1fr);   /* 2 colunas iguais */
+  gap:                   var(--espacamento-base);
+}
+
+
+/* ================================================================
+   18. CSS GRID — Demonstrações e Responsividade
+   ================================================================ */
+
+/* Container base de demonstração do Grid */
+.grid-demo {
+  display:    grid;              /* ATIVA o Grid */
+  gap:        8px;               /* espaço entre células */
+  padding:    12px;
+  background: #f7f9fc;
+  border:     1px solid var(--cor-borda);
+  border-radius: var(--raio-base);
+  margin:     8px 0;
+}
+
+/* Item do grid */
+.grid-item {
+  background:    var(--cor-secundaria);
+  color:         #fff;
+  padding:       10px;
+  border-radius: var(--raio-sm);
+  font-size:     0.8rem;
+  text-align:    center;
+}
+
+/* 3 colunas iguais com fr */
+.grid-3fr   { grid-template-columns: repeat(3, 1fr); }
+/* proporção 1:2:1 */
+.grid-1-2-1 { grid-template-columns: 1fr 2fr 1fr; }
+/* px + fr */
+.grid-px-fr { grid-template-columns: 200px 1fr; }
+
+/* Grid com linhas definidas */
+.grid-rows-demo {
+  grid-template-columns: 1fr;
+  grid-template-rows:    60px auto 40px; /* header fixo, main flex, footer fixo */
+  min-height: 200px;
+}
+
+/* Itens com alturas específicas */
+.gi-header { background: var(--cor-primaria);   height: 60px; }
+.gi-main   { background: var(--cor-secundaria); min-height: 80px; }
+.gi-footer { background: var(--cor-destaque);   height: 40px; }
+
+/* Grid com span */
+.grid-span-demo {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* span 2 colunas: começa na 1, ocupa 2 */
+.gi-span-2col {
+  grid-column: 1 / span 2;        /* coluna 1 até 1+2=3 */
+  background:  var(--cor-destaque);
+}
+
+/* span 3 colunas: linha inteira */
+.gi-span-3col {
+  grid-column: 1 / -1;            /* -1 = última linha de grade */
+  background:  var(--cor-primaria);
+}
+
+/* grid-template-areas */
+.grid-areas-demo {
+  display:               grid;
+  grid-template-columns: 180px 1fr;  /* sidebar + main */
+  grid-template-rows:    auto 1fr auto;
+  grid-template-areas:
+    "header  header"   /* linha 1: header ocupa 2 colunas */
+    "sidebar main"     /* linha 2: sidebar à esq, main à dir */
+    "footer  footer";  /* linha 3: footer ocupa 2 colunas */
+  gap:       8px;
+  min-height: 200px;
+  margin:    8px 0;
+}
+
+/* Cada filho usa grid-area com o nome definido no template */
+.ga-header  { grid-area: header;  background: var(--cor-primaria);   color:#fff; padding:10px; border-radius:var(--raio-sm); font-size:0.85rem; text-align:center; }
+.ga-sidebar { grid-area: sidebar; background: var(--cor-secundaria); color:#fff; padding:10px; border-radius:var(--raio-sm); font-size:0.85rem; }
+.ga-main    { grid-area: main;    background: #e3f2fd;               padding:10px; border-radius:var(--raio-sm); font-size:0.85rem; }
+.ga-footer  { grid-area: footer;  background: var(--cor-destaque);   color:#fff; padding:10px; border-radius:var(--raio-sm); font-size:0.85rem; text-align:center; }
+
+/* Sistema de 12 colunas */
+.grid-12col {
+  display:               grid;
+  grid-template-columns: repeat(12, 1fr);   /* 12 colunas iguais */
+  gap:                   6px;
+  margin:                8px 0;
+}
+
+/* Utilitários de span para o sistema de 12 colunas */
+.col-span-12 { grid-column: span 12; background: var(--cor-primaria); }
+.col-span-9  { grid-column: span  9; background: #1565c0; }
+.col-span-8  { grid-column: span  8; background: #1976d2; }
+.col-span-6  { grid-column: span  6; background: var(--cor-secundaria); }
+.col-span-4  { grid-column: span  4; background: #42a5f5; }
+.col-span-3  { grid-column: span  3; background: #64b5f6; }
+
+/* auto-fit + minmax — layout responsivo sem media query */
+.grid-autofit {
+  display:               grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  /* auto-fit → colunas criam e somem conforme o espaço
+     minmax(160px, 1fr) → mínimo 160px, máximo 1 fração */
+  gap:     8px;
+  margin:  8px 0;
+}
+
+/* fit-content */
+.grid-fitcontent {
+  display:               grid;
+  grid-template-columns: fit-content(220px) 1fr;
+  /* fit-content(220px) → cresce com o conteúdo, mas no máximo 220px */
+  gap:     8px;
+  margin:  8px 0;
+}
+
+/* Cards responsivos com Grid */
+.cards-grid-responsivo {
+  display:               grid;
+  grid-template-columns: repeat(3, 1fr);   /* padrão: 3 colunas desktop */
+  gap:                   var(--espacamento-base);
+  margin-top:            var(--espacamento-base);
+}
+
+.card-responsivo {
+  background:    var(--cor-card);
+  border-radius: var(--raio-base);
+  padding:       var(--espacamento-base);
+  box-shadow:    var(--sombra-sm);
+  text-align:    center;
+  font-size:     0.85rem;
+  border-top:    3px solid var(--cor-secundaria);
+  transition:    transform var(--transicao-rapida);
+}
+
+.card-responsivo:hover {
+  transform: translateY(-3px);
+}
+
+
+/* ================================================================
+   19. ANIMAÇÕES — transition
+   ================================================================ */
+
+/* Grid de demonstrações de transition */
+.demo-transition-grid {
+  display:               grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap:                   10px;
+  margin:                10px 0;
+}
+
+/* Base dos blocos de transição */
+.trans-demo {
+  padding:       20px 10px;
+  border-radius: var(--raio-base);
+  background:    var(--cor-secundaria);
+  color:         #fff;
+  text-align:    center;
+  font-size:     0.8rem;
+  cursor:        pointer;
+  overflow:      hidden;
+}
+
+/* Cada timing-function usa uma transition diferente */
+/* ease → começa devagar, acelera, termina devagar */
+.trans-ease      { transition: width 1s ease; }
+/* linear → ritmo constante */
+.trans-linear    { transition: width 1s linear; }
+/* ease-in → começa devagar, acelera */
+.trans-ease-in   { transition: width 1s ease-in; }
+/* ease-out → começa rápido, desacelera */
+.trans-ease-out  { transition: width 1s ease-out; }
+/* ease-in-out → começa e termina devagar */
+.trans-ease-in-out { transition: width 1s ease-in-out; }
+/* cubic-bezier → controle total da curva de aceleração */
+.trans-cubic     { transition: width 1s cubic-bezier(0.68, -0.55, 0.27, 1.55); }
+
+/* Ao passar o mouse, todos mudam a cor para demonstrar a transição */
+.trans-demo:hover {
+  background: var(--cor-destaque);   /* laranja */
+  transform:  scale(1.05);
+}
+
+/* transition com delay: a animação começa após 0.5s */
+.trans-delay {
+  padding:    16px;
+  background: #e3f2fd;
+  border-radius: var(--raio-base);
+  border:     2px solid var(--cor-secundaria);
+  font-size:  0.85rem;
+  cursor:     pointer;
+  margin-top: 10px;
+  /* transition-delay: 0.5s → espera meio segundo antes de começar */
+  transition: background 0.3s ease 0.5s, color 0.3s ease 0.5s;
+  /* formato: propriedade duração timing-function delay */
+}
+
+.trans-delay:hover {
+  background: var(--cor-primaria);
+  color:      #fff;
+}
+
+
+/* ================================================================
+   20. ANIMAÇÕES — @keyframes
+   ================================================================ */
+
+/* --- Declaração dos @keyframes ---
+   @keyframes define os "quadros-chave" da animação.
+   Cada seletor (0%, 50%, 100% ou from/to) define o estilo naquele ponto.
+   O navegador interpola (anima) automaticamente entre os quadros. */
+
+/* Animação de pulso: escala entre 1 e 1.1 */
+@keyframes pulso {
+  0%   { transform: scale(1); }       /* tamanho normal */
+  50%  { transform: scale(1.08); }    /* 8% maior no meio */
+  100% { transform: scale(1); }       /* volta ao normal */
+}
+
+/* Animação de deslizamento horizontal */
+@keyframes deslizar {
+  from { transform: translateX(0); }      /* posição inicial */
+  to   { transform: translateX(20px); }   /* vai 20px para a direita */
+}
+
+/* Animação de fade in + movimento vertical */
+@keyframes entrar {
+  0%   { opacity: 0; transform: translateY(-20px); }  /* invisível, acima */
+  100% { opacity: 1; transform: translateY(0); }       /* visível, posição normal */
+}
+
+/* Animação de giro com mudança de cor */
+@keyframes girar-cor {
+  0%   { transform: rotate(0deg);   background: var(--cor-primaria); }
+  33%  { transform: rotate(120deg); background: var(--cor-destaque); }
+  66%  { transform: rotate(240deg); background: var(--cor-sucesso); }
+  100% { transform: rotate(360deg); background: var(--cor-primaria); }
+}
+
+/* Animação de steps (frames discretos, como animação de sprite) */
+@keyframes piscar-steps {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Animação de barra de progresso */
+@keyframes progresso {
+  from { width: 0%; }
+  to   { width: 100%; }
+}
+
+/* Animação para ::before (bolinha pulsando) */
+@keyframes bolinha-pulsa {
+  0%   { transform: scale(1);   background: var(--cor-destaque); }
+  50%  { transform: scale(1.4); background: var(--cor-primaria); }
+  100% { transform: scale(1);   background: var(--cor-destaque); }
+}
+
+/* Animação para ::after (linha expandindo) */
+@keyframes linha-expande {
+  from { width: 0; opacity: 0; }
+  to   { width: 100%; opacity: 1; }
+}
+
+/* Animação de balanço */
+@keyframes balancar {
+  0%,100% { transform: rotate(-5deg); }
+  50%     { transform: rotate(5deg); }
+}
+
+/* Grid de demos de animation */
+.demo-animation-grid {
+  display:               grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap:                   10px;
+  margin:                10px 0;
+}
+
+/* Base dos blocos de animação */
+.demo-animation-grid > div {
+  padding:       16px 10px;
+  border-radius: var(--raio-base);
+  background:    var(--cor-primaria);
+  color:         #fff;
+  text-align:    center;
+  font-size:     0.8rem;
+}
+
+/* animation-iteration-count: infinite */
+.anim-pulso {
+  animation-name:            pulso;          /* nome do @keyframes */
+  animation-duration:        1.5s;           /* duração de um ciclo */
+  animation-timing-function: ease-in-out;    /* curva de aceleração */
+  animation-iteration-count: infinite;       /* repete para sempre */
+}
+
+/* animation-direction: alternate (ida e volta) */
+.anim-alternate {
+  animation: deslizar 0.8s ease-in-out infinite alternate;
+  /* alternate: vai até o fim, volta ao início, vai novamente... */
+}
+
+/* animation-direction: reverse */
+.anim-reverse {
+  animation: deslizar 1s ease infinite reverse;
+  /* reverse: começa do fim e vai para o início */
+}
+
+/* animation-fill-mode: forwards */
+.anim-forwards {
+  animation: entrar 1.5s ease forwards;
+  /* forwards: depois de terminar, mantém o estilo do último frame */
+  animation-iteration-count: 1;              /* executa só uma vez */
+}
+
+/* animation-fill-mode: backwards */
+.anim-backwards {
+  opacity: 1;
+  animation: entrar 1.5s ease 2s backwards;
+  /* backwards: durante o delay (2s), aplica o estilo do frame inicial */
+  animation-iteration-count: 1;
+}
+
+/* animation-play-state: paused no hover */
+.anim-pausavel {
+  animation: pulso 1s infinite;
+  /* a animação roda normalmente */
+}
+
+.anim-pausavel:hover {
+  animation-play-state: paused;    /* pausa ao passar o mouse */
+}
+
+/* animation-timing-function: steps() */
+.anim-steps {
+  animation: piscar-steps 1s steps(5) infinite;
+  /* steps(5): divide a animação em 5 passos discretos (não interpolação suave) */
+}
+
+/* Demo de @keyframes com 0%, 50%, 100% */
+.anim-keyframes-demo {
+  margin: 10px 0;
+}
+
+.box-keyframe {
+  padding:       20px;
+  border-radius: var(--raio-base);
+  background:    var(--cor-primaria);
+  color:         #fff;
+  text-align:    center;
+  font-size:     0.85rem;
+  animation:     girar-cor 3s linear infinite;
+  /* usa o @keyframes girar-cor definido acima */
+}
+
+/* ::before e ::after com animation */
+.demo-before-after-anim {
+  display:        flex;
+  flex-direction: column;
+  gap:            10px;
+  margin:         10px 0;
+}
+
+.item-before-anim,
+.item-after-anim {
+  padding:  12px 12px 12px 40px;   /* espaço para o pseudo-elemento */
+  position: relative;              /* position:relative para o ::before poder usar absolute */
+  background: #f0f4f8;
+  border-radius: var(--raio-base);
+  font-size: 0.9rem;
+}
+
+/* ::before animado — bolinha pulsando antes do texto */
+.item-before-anim::before {
+  content:    "";                          /* OBRIGATÓRIO — vazio pois é decorativo */
+  position:   absolute;                   /* posiciona em relação ao pai (position:relative) */
+  left:       12px;
+  top:        50%;
+  transform:  translateY(-50%);           /* centraliza verticalmente */
+  width:      16px;
+  height:     16px;
+  border-radius: 50%;                     /* círculo perfeito */
+  background: var(--cor-destaque);
+  animation:  bolinha-pulsa 1s infinite;  /* usa o @keyframes definido acima */
+}
+
+/* ::after animado — linha que expande sob o texto */
+.item-after-anim::after {
+  content:    "";
+  position:   absolute;
+  bottom:     0;
+  left:       0;
+  height:     3px;
+  background: var(--cor-primaria);
+  animation:  linha-expande 2s ease-in-out infinite alternate;
+  border-radius: 0 0 var(--raio-base) var(--raio-base);
+}
+
+
+/* ================================================================
+   21. TRANSFORM
+   ================================================================ */
+
+/* Grid de demonstrações de transform */
+.demo-transform-grid {
+  display:               grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap:                   var(--espacamento-base);
+}
+
+.transform-demo-card {
+  text-align: center;
+}
+
+/* Caixa base para as demonstrações de transform */
+.box-transform {
+  width:         100px;
+  height:        80px;
+  background:    var(--cor-secundaria);
+  color:         #fff;
+  display:       flex;
+  align-items:   center;
+  justify-content: center;
+  margin:        20px auto;     /* espaço para as transformações não cortarem */
+  border-radius: var(--raio-sm);
+  font-size:     0.75rem;
+  text-align:    center;
+  transition:    transform var(--transicao-base); /* anima a transformação */
+  cursor:        pointer;
+}
+
+/* translate: move sem afetar o fluxo */
+.trans-translate:hover { transform: translate(30px, 20px); }
+
+/* rotate: gira em torno do próprio centro */
+.trans-rotate:hover    { transform: rotate(45deg); }
+
+/* scale: aumenta/diminui */
+.trans-scale:hover     { transform: scale(1.3); }
+
+/* skew: inclina */
+.trans-skew:hover      { transform: skew(20deg, 5deg); }
+
+/* matrix: combina translate + rotate + scale de uma vez */
+.trans-matrix:hover    { transform: matrix(1.2, 0.2, -0.2, 1.2, 10, 10); }
+
+/* Múltiplas transformações em sequência (da direita para a esquerda) */
+.trans-combined:hover  { transform: rotate(15deg) scale(1.15) translateX(10px); }
+
+
+/* ================================================================
+   22. CLIP-PATH
+   ================================================================ */
+
+/* Grid de demonstrações de clip-path */
+.demo-clippath-grid {
+  display:               grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap:                   var(--espacamento-base);
+}
+
+.clip-demo-card {
+  text-align: center;
+}
+
+/* Caixa base para clip-path */
+.clip-box {
+  width:      140px;
+  height:     140px;
+  background: linear-gradient(135deg, var(--cor-primaria), var(--cor-destaque));
+  color:      #fff;
+  display:    flex;
+  align-items: center;
+  justify-content: center;
+  margin:     20px auto;
+  font-size:  0.75rem;
+  font-weight: bold;
+  text-align: center;
+  cursor:     pointer;
+  /* clip-path anima quando tem transition */
+  transition: clip-path var(--transicao-lenta);
+}
+
+/* circle() — forma circular */
+.clip-circle {
+  clip-path: circle(40%);    /* círculo com raio 40% do tamanho do elemento */
+}
+.clip-circle:hover {
+  clip-path: circle(50%);    /* expande ao hover */
+}
+
+/* ellipse() — forma elíptica */
+.clip-ellipse {
+  clip-path: ellipse(50% 35% at center); /* elipse: largura 50%, altura 35%, centro */
+}
+.clip-ellipse:hover {
+  clip-path: ellipse(50% 50% at center);
+}
+
+/* inset() — retângulo com margens internas */
+.clip-inset {
+  clip-path: inset(15px 25px round 8px); /* recorta 15px do topo/baixo, 25px das laterais */
+}
+.clip-inset:hover {
+  clip-path: inset(5px 10px round 4px);
+}
+
+/* polygon() — qualquer forma com múltiplos pontos X% Y% */
+.clip-polygon {
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%); /* triângulo apontando para cima */
+}
+.clip-polygon:hover {
+  clip-path: polygon(50% 10%, 10% 90%, 90% 90%);  /* triângulo menor */
+}
+
+/* polygon() — estrela de 5 pontas */
+.clip-star {
+  clip-path: polygon(
+    50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%,
+    50% 70%, 21% 91%, 32% 57%, 2%  35%, 39% 35%
+  );
+}
+.clip-star:hover {
+  clip-path: polygon(
+    50% 5%, 63% 32%, 97% 32%, 70% 55%, 80% 89%,
+    50% 72%, 20% 89%, 30% 55%, 3%  32%, 37% 32%
+  );
+}
+
+
+/* ================================================================
+   23. :CHECKED DEMOS
+   ================================================================ */
+
+/* Checkbox escondido — apenas o label fica visível */
+.cb-escondido {
+  display: none;    /* remove da renderização mas mantém funcional */
+}
+
+/* Botão que funciona como label para o checkbox */
+.btn-cb {
+  display:       inline-block;
+  padding:       8px 16px;
+  background:    var(--cor-primaria);
+  color:         #fff;
+  border-radius: var(--raio-base);
+  cursor:        pointer;
+  font-size:     0.9rem;
+  font-weight:   600;
+  transition:    background var(--transicao-rapida);
+  user-select:   none;
+}
+
+.btn-cb:hover {
+  background: var(--cor-secundaria);
+}
+
+/* Grid de demos de :checked */
+.demo-checked-grid {
+  display:               grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap:                   var(--espacamento-base);
+  margin-top:            var(--espacamento-base);
+}
+
+.checked-demo {
+  padding:       var(--espacamento-base);
+  background:    #f7f9fc;
+  border-radius: var(--raio-base);
+  border:        1px solid var(--cor-borda);
+}
+
+/* Menu que abre/fecha com :checked */
+.menu-cb {
+  max-height: 0;                  /* começa fechado (sem altura) */
+  overflow:   hidden;             /* esconde o conteúdo que transborda */
+  transition: max-height var(--transicao-base); /* anima suavemente */
+  background: var(--cor-card);
+  border-radius: var(--raio-sm);
+}
+
+/* ~ = seletor irmão geral: quando #cb-menu-demo está :checked, abre o .menu-cb irmão */
+#cb-menu-demo:checked ~ .menu-cb {
+  max-height: 200px;    /* define altura para revelar o conteúdo */
+}
+
+.menu-cb ul {
+  padding: 10px 20px;
+  list-style: disc;
+  font-size: 0.9rem;
+}
+
+/* Card expansível */
+.card-expandivel {
+  max-height: 0;
+  overflow:   hidden;
+  transition: max-height var(--transicao-lenta), padding var(--transicao-base);
+  padding:    0 10px;
+  font-size:  0.9rem;
+  background: #e8f4fd;
+  border-radius: var(--raio-sm);
+}
+
+#cb-card-demo:checked ~ .card-expandivel {
+  max-height: 200px;
+  padding:    10px;
+}
+
+/* Preview de tema com :checked */
+.tema-preview {
+  margin-top: 10px;
+  padding:    12px;
+  background: #fff;
+  color:      #222;
+  border-radius: var(--raio-base);
+  border:     1px solid var(--cor-borda);
+  font-size:  0.85rem;
+  transition: background var(--transicao-base), color var(--transicao-base);
+}
+
+#cb-tema-demo:checked ~ .tema-preview {
+  background: #1a1a2e;    /* fundo escuro */
+  color:      #e0e0e0;    /* texto claro */
+}
+
+/* Tabs com radio buttons */
+.tabs-labels {
+  display:   flex;
+  gap:       4px;
+  margin:    8px 0 0;
+}
+
+.tab-label {
+  padding:       6px 16px;
+  background:    #e0e0e0;
+  border-radius: var(--raio-sm) var(--raio-sm) 0 0; /* arredonda só topo */
+  cursor:        pointer;
+  font-size:     0.85rem;
+  transition:    background var(--transicao-rapida);
+}
+
+/* Conteúdo das tabs: escondido por padrão */
+.tab-content {
+  display:    none;                /* escondido */
+  padding:    12px;
+  background: #f0f4f8;
+  border-radius: 0 var(--raio-sm) var(--raio-sm) var(--raio-sm);
+  font-size:  0.85rem;
+}
+
+/* Mostra conteúdo quando o radio correspondente está :checked */
+/* ~ seleciona irmão geral: input:checked → .tab-content com id correspondente */
+#tab1:checked ~ .tabs-labels label[for="tab1"],
+#tab2:checked ~ .tabs-labels label[for="tab2"],
+#tab3:checked ~ .tabs-labels label[for="tab3"] {
+  background: var(--cor-primaria);
+  color:      #fff;
+}
+
+/* Técnica para tabs: usa + seletor irmão adjacente para encontrar o conteúdo */
+#tab1:checked ~ .tabs-labels ~ #content-tab1,
+#tab2:checked ~ .tabs-labels ~ #content-tab2,
+#tab3:checked ~ .tabs-labels ~ #content-tab3 {
+  display: block;    /* mostra o conteúdo da tab ativa */
+}
+
+
+/* ================================================================
+   24. :TARGET DEMOS
+   ================================================================ */
+
+/* Links para os :target */
+.target-links {
+  display:   flex;
+  gap:       10px;
+  flex-wrap: wrap;
+  margin-bottom: var(--espacamento-base);
+}
+
+.btn-target {
+  padding:       8px 16px;
+  background:    var(--cor-secundaria);
+  color:         #fff !important;
+  border-radius: var(--raio-base);
+  font-size:     0.9rem;
+  font-weight:   600;
+  transition:    background var(--transicao-rapida);
+  text-decoration: none;
+}
+
+.btn-target:hover {
+  background: var(--cor-primaria);
+}
+
+/* Seção :target — estilo padrão (inativo) */
+.target-section {
+  padding:       var(--espacamento-base);
+  margin-bottom: 10px;
+  border-radius: var(--raio-base);
+  border:        2px solid var(--cor-borda);
+  transition:    all var(--transicao-base);
+  background:    #f7f9fc;
+}
+
+/* :target — ativa quando o elemento está na URL (#target-1, #target-2, etc.) */
+.target-section:target {
+  background:  #e8f4fd;                        /* fundo azul claro */
+  border-color: var(--cor-secundaria);          /* borda azul */
+  box-shadow:   0 0 0 4px rgba(46,117,182,.2); /* brilho ao redor */
+  transform:    scale(1.01);                    /* leve zoom */
+}
+
+.target-section h4 {
+  color: var(--cor-primaria);
+  font-size: 1rem;
+}
+
+
+/* ================================================================
+   25. VARIÁVEIS CSS DEMO
+   ================================================================ */
+
+.demo-variaveis {
+  display:               grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap:                   10px;
+  margin:                10px 0;
+}
+
+.demo-variaveis > div {
+  padding:       16px 10px;
+  border-radius: var(--raio-base);
+  color:         #fff;
+  text-align:    center;
+  font-size:     0.8rem;
+  font-weight:   600;
+}
+
+/* Cada div usa a variável CSS correspondente */
+.var-primaria    { background: var(--cor-primaria); }
+.var-secundaria  { background: var(--cor-secundaria); }
+.var-destaque    { background: var(--cor-destaque); }
+.var-espacamento {
+  background:  var(--cor-sucesso);
+  padding:     var(--espacamento-base);   /* usa a variável de espaçamento */
+}
+
+/* Demo do toggle de tema escuro via :checked + variáveis */
+.toggle-tema-cb { display: none; }   /* checkbox escondido */
+
+.btn-tema {
+  display:       inline-block;
+  padding:       8px 16px;
+  background:    #333;
+  color:         #fff;
+  border-radius: var(--raio-base);
+  cursor:        pointer;
+  font-size:     0.9rem;
+  transition:    background var(--transicao-rapida);
+}
+
+.btn-tema:hover { background: #555; }
+
+.demo-tema-preview {
+  margin-top:    10px;
+  padding:       var(--espacamento-base);
+  background:    #ffffff;
+  color:         #222222;
+  border-radius: var(--raio-base);
+  border:        1px solid var(--cor-borda);
+  font-size:     0.85rem;
+  transition:    background var(--transicao-base), color var(--transicao-base);
+}
+
+/* Quando toggle-tema está :checked, o .demo-tema-preview irmão muda de tema */
+#toggle-tema:checked ~ .demo-tema-preview {
+  background: #1a1a2e;   /* azul muito escuro */
+  color:      #e2e8f0;   /* texto claro */
+}
+
+
+/* ================================================================
+   26. COMPONENTES REUTILIZÁVEIS
+   ================================================================ */
+
+/* Demonstração do HTML semântico (estrutura visual) */
+.demo-semantico {
+  font-size:  0.75rem;
+  margin:     10px 0;
+}
+
+/* Blocos coloridos para cada tag semântica */
+.bloco-sem {
+  padding:       8px;
+  margin:        4px;
+  border-radius: var(--raio-sm);
+  font-weight:   bold;
+  font-size:     0.75rem;
+}
+
+.bloco-header  { background: #bbdefb; border: 2px solid #1976d2; }
+.bloco-nav     { background: #c8e6c9; border: 2px solid #388e3c; font-size: 0.7rem; }
+.bloco-main    { background: #fff9c4; border: 2px solid #f9a825; min-height: 80px; }
+.bloco-section { background: #ffe0b2; border: 2px dashed #e65100; display: flex; gap: 4px; }
+.bloco-article { background: #f8bbd0; border: 2px solid #c2185b; flex: 2; }
+.bloco-aside   { background: #e1bee7; border: 2px solid #7b1fa2; flex: 1; }
+.bloco-footer  { background: #cfd8dc; border: 2px solid #546e7a; }
+
+/* Iframe responsivo (mantém proporção 16:9) */
+.iframe-container {
+  position:      relative;
+  padding-bottom: 56.25%;   /* 16:9 = 9/16 = 56.25% */
+  height:        0;
+  overflow:      hidden;
+  border-radius: var(--raio-base);
+  margin:        10px 0;
+}
+
+.iframe-container iframe {
+  position: absolute;    /* posicionado dentro do container relativo */
+  top:    0;
+  left:   0;
+  width:  100%;          /* ocupa 100% do container */
+  height: 100%;
+  border: 0;
+  border-radius: var(--raio-base);
+}
+
+/* Tabela de entidades */
+.tabela-entidades { margin: 10px 0; }
+
+/* Demo de background */
+.demo-bg-grid { margin: 10px 0; }
+
+/* Demo semântico */
+.demo-semantico { overflow-x: auto; }
+
+
+/* ================================================================
+   27. FOOTER
+   ================================================================ */
+
+footer {
+  background:  var(--cor-primaria);     /* fundo azul */
+  color:       #cce0ff;                  /* texto azul claro */
+  text-align:  center;
+  padding:     var(--espacamento-lg) var(--espacamento-base);
+  margin-top:  auto;                     /* empurra para o fundo (flex-grow:1 no main) */
+}
+
+footer p {
+  color:     #cce0ff;
+  font-size: 0.9rem;
+  max-width: none;
+  margin-bottom: 0.3em;
+}
+
+/* Nav no footer */
+.nav-footer {
+  margin-top: var(--espacamento-base);
+  display:    flex;
+  justify-content: center;
+  gap:        var(--espacamento-base);
+  flex-wrap:  wrap;
+}
+
+.nav-footer a {
+  color:      #a8d0ff;
+  font-size:  0.85rem;
+  transition: color var(--transicao-rapida);
+}
+
+.nav-footer a:hover {
+  color:           #ffffff;
+  text-decoration: none;
+}
+
+
+/* ================================================================
+   28. BOTÃO VOLTAR AO TOPO — position: fixed
+   ================================================================ */
+
+/* position: fixed → fica sempre visível, independente do scroll */
+.btn-topo {
+  position:   fixed;            /* fixado na viewport */
+  bottom:     24px;             /* 24px do fundo */
+  right:      24px;             /* 24px da direita */
+  width:      46px;
+  height:     46px;
+  background: var(--cor-primaria);
+  color:      #fff !important;
+  border-radius: 50%;           /* círculo perfeito */
+  font-size:  1.4rem;
+  display:    flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--sombra-base);
+  z-index:    999;
+  transition: all var(--transicao-rapida);
+  text-decoration: none;
+}
+
+/* :hover no botão de topo */
+.btn-topo:hover {
+  background:  var(--cor-destaque);   /* laranja */
+  transform:   scale(1.1) translateY(-2px);
+  box-shadow:  var(--sombra-lg);
+  text-decoration: none;
+}
+
+
+/* ================================================================
+   29. MEDIA QUERIES — Responsividade
+   
+   Mobile-first: estilos base para mobile, exceções para telas maiores.
+   Aqui usamos "desktop-first": estilos base para desktop,
+   @media para ajustar em telas menores.
+   ================================================================ */
+
+/* Tablet: largura máxima de 900px */
+@media (max-width: 900px) {
+
+  /* Grid de 3 colunas → 2 colunas */
+  .grid-3col {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Cards da atividade 03: 2 por linha */
+  .cards-grid-responsivo {
+    grid-template-columns: repeat(2, 1fr);
+    /* Adapta de 3 colunas para 2 em tablet */
+  }
+
+  /* Grid de areas: sidebar e main ficam em coluna única */
+  .grid-areas-demo {
+    grid-template-columns: 1fr;     /* 1 coluna */
+    grid-template-areas:
+      "header"
+      "sidebar"
+      "main"
+      "footer";   /* empilha verticalmente */
+  }
+
+  /* Transform grid: 2 colunas */
+  .demo-transform-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+}
+
+/* Mobile: largura máxima de 600px */
+@media (max-width: 600px) {
+
+  /* Reduz padding do header no mobile */
+  header {
+    padding:      var(--espacamento-base);
+    padding-left: 90px;   /* mantém espaço para o botão menu */
+    flex-direction: column;
+    text-align:   center;
+    position:     relative; /* sticky pode ser problemático em mobile muito pequeno */
+  }
+
+  /* Nav principal: centralizada e menor */
+  .nav-principal ul {
+    justify-content: center;
+    gap: 4px;
+  }
+
+  .nav-principal a {
+    font-size: 0.8rem;
+    padding:   4px 8px;
+  }
+
+  /* Todos os grids de 2+ colunas → 1 coluna no mobile */
+  .grid-2col,
+  .grid-3col,
+  .demo-transform-grid,
+  .demo-clippath-grid,
+  .demo-checked-grid {
+    grid-template-columns: 1fr;    /* 1 única coluna */
+  }
+
+  /* Cards da atividade 03: 1 por linha */
+  .cards-container,
+  .cards-grid-responsivo {
+    flex-direction: column;        /* empilha os cards */
+  }
+
+  /* Cards flexbox: largura total no mobile */
+  .card-atividade {
+    flex: 1 1 100%;                /* ocupa 100% da linha */
+  }
+
+  /* Sistema de 12 colunas: tudo empilha no mobile */
+  .col-span-3,
+  .col-span-4,
+  .col-span-6,
+  .col-span-9 {
+    grid-column: span 12;          /* ocupa as 12 colunas (linha inteira) */
+  }
+
+  /* Font sizes menores no mobile */
+  h1 { font-size: 1.6rem; }
+  h2 { font-size: 1.4rem; }
+  h3 { font-size: 1.1rem; }
+
+  /* Títulos das seções menores */
+  section > h2 { font-size: 1.5rem; }
+
+  /* Sidebar mais larga no mobile */
+  :root {
+    --largura-sidebar: 80vw;       /* 80% da largura da viewport */
+  }
+
+  /* justify-content demos em coluna no mobile */
+  .jc-flex-start,
+  .jc-flex-end,
+  .jc-center,
+  .jc-space-between,
+  .jc-space-around,
+  .jc-space-evenly {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+}
+
+/* Print: estilos para impressão */
+@media print {
+  /* Esconde elementos desnecessários na impressão */
+  .sidebar,
+  .btn-menu,
+  .btn-topo,
+  nav {
+    display: none;
+  }
+
+  /* Remove fundos coloridos (economiza tinta) */
+  * {
+    background: white !important;
+    color:      black !important;
+  }
+
+  /* Links visíveis na impressão */
+  a::after {
+    content: " (" attr(href) ")";   /* mostra a URL após o texto do link */
+    font-size: 0.7em;
+    color: #666;
+  }
+}

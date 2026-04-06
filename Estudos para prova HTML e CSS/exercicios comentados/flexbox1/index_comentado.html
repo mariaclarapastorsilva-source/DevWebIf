@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<!-- Define o tipo do documento como HTML5 -->
+
+<html lang="pt-BR">
+<!-- Abre o elemento raiz da página; lang="pt-BR" indica que o idioma é português do Brasil -->
+
+<head>
+  <!-- Seção de metadados da página (não aparece visualmente) -->
+
+  <meta charset="UTF-8">
+  <!-- Define a codificação de caracteres como UTF-8, permitindo acentos e caracteres especiais -->
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Garante que a página se adapte corretamente a dispositivos móveis (responsividade) -->
+
+  <title>FlexSite</title>
+  <!-- Define o título que aparece na aba do navegador -->
+
+  <link rel="stylesheet" href="style.css">
+  <!-- Vincula o arquivo de estilos externo style.css a esta página -->
+
+</head>
+
+<body>
+<!-- Inicia o corpo da página — tudo que o usuário vê está aqui -->
+
+  <input type="checkbox" id="menu-toggle">
+  <!-- Checkbox oculto que controla a abertura/fechamento do menu lateral (sidebar).
+       Quando marcado, o CSS usa o seletor :checked para mostrar o menu. -->
+
+  <input type="checkbox" id="theme-toggle">
+  <!-- Checkbox oculto que controla a alternância entre tema claro e escuro.
+       Funciona da mesma forma: o CSS reage ao estado :checked para mudar as cores. -->
+
+  <label for="menu-toggle" class="menu-btn">&#9776;</label>
+  <!-- Botão (ícone ☰ hambúrguer) visível na tela.
+       Ao clicar, marca/desmarca o #menu-toggle, mostrando ou escondendo o menu lateral.
+       O "for" conecta este label ao checkbox #menu-toggle. -->
+
+  <nav class="sidebar">
+    <!-- Barra de navegação lateral (sidebar). Fica escondida por padrão e aparece quando o menu é aberto. -->
+
+    <a href="#">Inicio</a>
+    <!-- Link de navegação para a seção "Início" (href="#" é um placeholder sem destino real) -->
+
+    <a href="#">Sobre</a>
+    <!-- Link de navegação para a seção "Sobre" -->
+
+    <a href="#">Projetos</a>
+    <!-- Link de navegação para a seção "Projetos" -->
+
+    <a href="#">Contato</a>
+    <!-- Link de navegação para a seção "Contato" -->
+
+  </nav>
+
+  <header class="topbar">
+    <!-- Cabeçalho fixo no topo da página (barra superior) -->
+
+    <span class="logo">FlexSite</span>
+    <!-- Exibe o nome/logo do site no lado esquerdo da topbar -->
+
+    <nav class="topnav">
+      <!-- Barra de navegação horizontal dentro do header (visível em telas maiores) -->
+
+      <a href="#">Inicio</a>
+      <!-- Link para "Início" no menu do topo -->
+
+      <a href="#">Sobre</a>
+      <!-- Link para "Sobre" no menu do topo -->
+
+      <a href="#">Projetos</a>
+      <!-- Link para "Projetos" no menu do topo -->
+
+      <a href="#">Contato</a>
+      <!-- Link para "Contato" no menu do topo -->
+
+      <label for="theme-toggle" class="theme-btn">🌘</label>
+      <!-- Botão com ícone de lua 🌘 que ativa/desativa o modo escuro.
+           Ao clicar, marca/desmarca o #theme-toggle. -->
+
+    </nav>
+  </header>
+
+  <main class="content">
+    <!-- Área principal de conteúdo da página -->
+
+    <h1>Bem-vindo ao FlexSite</h1>
+    <!-- Título principal (heading de nível 1) da seção de conteúdo -->
+
+    <p>Este site agora tem menu escondido e tema escuro com CSS puro 🎨</p>
+    <!-- Parágrafo descritivo explicando as funcionalidades do site -->
+
+    <div class="cards">
+      <!-- Container que agrupa os cards em linha usando Flexbox -->
+
+      <div class="card">Card 1</div>
+      <!-- Primeiro card — elemento visual de destaque ou conteúdo -->
+
+      <div class="card">Card 2</div>
+      <!-- Segundo card -->
+
+      <div class="card">Card 3</div>
+      <!-- Terceiro card -->
+
+    </div>
+  </main>
+
+  <footer>
+    <!-- Rodapé da página -->
+
+    <p>&copy; 2025 FlexSite. Todos os direitos reservados.</p>
+    <!-- Texto de copyright. &copy; é o símbolo © em HTML -->
+
+  </footer>
+
+</body>
+<!-- Fim do corpo da página -->
+
+</html>
+<!-- Fecha o elemento raiz HTML -->

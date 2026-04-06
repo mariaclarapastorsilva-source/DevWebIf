@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<!-- DOCTYPE: diz ao navegador que é HTML5 -->
+<html lang="pt-BR">
+<!-- lang="pt-BR": idioma da página — melhora acessibilidade e SEO -->
+
+<head>
+  <meta charset="UTF-8">
+  <!-- charset UTF-8: suporta acentos e caracteres especiais do português -->
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- viewport: essencial para responsividade — adapta ao tamanho da tela -->
+
+  <meta name="description" content="Portfólio de estudos de Desenvolvimento Web 1 — HTML, CSS, Flexbox, Grid e mais.">
+  <!-- description: aparece nos resultados do Google (SEO) -->
+
+  <meta name="author" content="Maria Clara">
+
+  <title>Dev Web &mdash; Portfólio de Estudos</title>
+  <!-- title: texto da aba do navegador -->
+
+  <!-- favicon: ícone da aba -->
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+  <!-- CSS externo: forma recomendada de estilizar (separa estrutura da aparência) -->
+  <link rel="stylesheet" href="estilo.css">
+</head>
+
+<body>
+
+  <!-- =============================================
+       TÉCNICA: checkbox + label + ~ (seletor irmão)
+       Sidebar sem JavaScript — igual à Atividade 04
+       ============================================= -->
+
+  <!-- input escondido — guarda o estado aberto/fechado -->
+  <input type="checkbox" id="toggle-menu" class="toggle-escondido">
+
+  <!-- label vira o botão visível — ao clicar, marca/desmarca o checkbox -->
+  <label for="toggle-menu" class="btn-hamburger">&#9776; Menu</label>
+
+  <!-- nav.sidebar: aparece quando #toggle-menu está :checked -->
+  <nav class="sidebar">
+    <h2 class="sidebar-titulo">Conteúdo</h2>
+    <ul>
+      <!-- âncoras internas: href="#id" rola até o elemento com aquele id -->
+      <li><a href="#inicio">Início</a></li>
+      <li><a href="#sobre">Sobre HTML</a></li>
+      <li><a href="#listas">Listas</a></li>
+      <li><a href="#midia">Mídia</a></li>
+      <li><a href="#css">CSS</a></li>
+      <li><a href="#flexbox">Flexbox</a></li>
+      <li><a href="#grid">Grid</a></li>
+      <li><a href="#posicao">Position</a></li>
+      <li><a href="#contato">Contato</a></li>
+    </ul>
+  </nav>
+
+  <!-- wrapper: empurrado para a direita quando sidebar abre -->
+  <div class="wrapper">
+
+    <!-- =============================================
+         HEADER — tag semântica de cabeçalho
+         ============================================= -->
+    <header id="inicio">
+      <!-- h1: título principal — só um por página -->
+      <h1>Portfólio de Estudos</h1>
+      <p>Desenvolvimento Web 1 &mdash; Profa. Ariadne Arrais</p>
+      <!-- &mdash; é a entidade HTML para o travessão — -->
+
+      <!-- nav semântico: menus de navegação -->
+      <nav class="nav-topo">
+        <ul>
+          <!-- âncoras internas: levam o usuário para seções da mesma página -->
+          <li><a href="#sobre">HTML</a></li>
+          <li><a href="#css">CSS</a></li>
+          <li><a href="#flexbox">Flexbox</a></li>
+          <li><a href="#grid">Grid</a></li>
+          <li><a href="#contato">Contato</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- =============================================
+         MAIN — conteúdo principal da página
+         Só deve haver um <main> por página
+         ============================================= -->
+    <main>
+
+      <!-- =============================================
+           SEÇÃO: SOBRE HTML
+           section: agrupa conteúdo com tema comum
+           id="sobre": âncora interna (href="#sobre")
+           ============================================= -->
+      <section id="sobre">
+        <h2>Introdução ao HTML</h2>
+
+        <!-- article: conteúdo independente e reutilizável -->
+        <article class="card">
+          <h3>O que é HTML?</h3>
+          <p>
+            <strong>HTML</strong> (HyperText Markup Language) é uma linguagem de
+            <em>marcação</em> usada para estruturar páginas web.
+            <!-- <strong>: ênfase semântica — negrito com significado -->
+            <!-- <em>: ênfase semântica — itálico com significado -->
+          </p>
+          <p>
+            Não é uma linguagem de programação &mdash; ela não executa lógica.
+            Utiliza <strong>tags</strong> para definir elementos na página.
+          </p>
+
+          <!-- aside: conteúdo complementar, relacionado mas não principal -->
+          <aside class="dica">
+            <p>
+              <strong>Dica:</strong> Use tags semânticas como
+              <code>&lt;header&gt;</code>, <code>&lt;main&gt;</code>,
+              <code>&lt;section&gt;</code> e <code>&lt;footer&gt;</code>
+              em vez de <code>&lt;div&gt;</code> para tudo.
+              <!-- <code>: trecho de código — fonte monoespaçada -->
+            </p>
+          </aside>
+        </article>
+
+        <!-- Tabela de tags semânticas -->
+        <article class="card">
+          <h3>Tags semânticas</h3>
+          <!-- table: estrutura tabular de dados -->
+          <table>
+            <thead>
+              <!-- thead: cabeçalho da tabela -->
+              <tr>
+                <th>Tag</th>          <!-- th: célula de cabeçalho -->
+                <th>Para que serve</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- tbody: corpo da tabela -->
+              <!-- tr: linha | td: célula de dado -->
+              <tr><td><code>&lt;header&gt;</code></td><td>Cabeçalho da página ou seção</td></tr>
+              <tr><td><code>&lt;nav&gt;</code></td><td>Menu de navegação</td></tr>
+              <tr><td><code>&lt;main&gt;</code></td><td>Conteúdo principal (único por página)</td></tr>
+              <tr><td><code>&lt;section&gt;</code></td><td>Seção temática com título</td></tr>
+              <tr><td><code>&lt;article&gt;</code></td><td>Conteúdo independente</td></tr>
+              <tr><td><code>&lt;aside&gt;</code></td><td>Conteúdo complementar</td></tr>
+              <tr><td><code>&lt;footer&gt;</code></td><td>Rodapé</td></tr>
+            </tbody>
+          </table>
+        </article>
+
+        <!-- Links: tipos de href -->
+        <article class="card">
+          <h3>Links com &lt;a&gt;</h3>
+          <ul class="lista-links">
+            <!-- href externo: abre outro site -->
+            <li>
+              <a href="https://developer.mozilla.org" target="_blank" rel="noopener noreferrer">
+                MDN Web Docs (target="_blank" — abre nova aba)
+              </a>
+            </li>
+            <!-- href âncora interna: rola para seção da mesma página -->
+            <li>
+              <a href="#css">Ir para seção CSS (âncora interna — href="#css")</a>
+            </li>
+            <!-- href mailto: abre cliente de e-mail -->
+            <li>
+              <a href="mailto:aluna@email.com">E-mail (href="mailto:...")</a>
+            </li>
+            <!-- href tel: abre discador no celular -->
+            <li>
+              <a href="tel:+5511999999999">Telefone (href="tel:...")</a>
+            </li>
+          </ul>
+        </article>
+      </section>
+
+      <!-- =============================================
+           SEÇÃO: LISTAS
+           ============================================= -->
+      <section id="listas">
+        <h2>Listas em HTML</h2>
+
+        <div class="grid-3">
+          <!-- ul: lista não ordenada (marcadores) -->
+          <article class="card">
+            <h3>&lt;ul&gt; Não ordenada</h3>
+            <ul>
+              <li>HTML</li>
+              <li>CSS</li>
+              <li>JavaScript</li>
+            </ul>
+          </article>
+
+          <!-- ol: lista ordenada (numeração automática) -->
+          <article class="card">
+            <h3>&lt;ol&gt; Ordenada</h3>
+            <ol>
+              <li>Aprender HTML</li>
+              <li>Aprender CSS</li>
+              <li>Praticar projetos</li>
+            </ol>
+          </article>
+
+          <!-- dl: lista de definição (glossário) -->
+          <article class="card">
+            <h3>&lt;dl&gt; Definição</h3>
+            <dl>
+              <dt>HTML</dt>   <!-- dt: termo -->
+              <dd>Estrutura</dd>  <!-- dd: definição -->
+              <dt>CSS</dt>
+              <dd>Aparência</dd>
+              <dt>JS</dt>
+              <dd>Comportamento</dd>
+            </dl>
+          </article>
+        </div>
+      </section>
+
+      <!-- =============================================
+           SEÇÃO: MÍDIA
+           ============================================= -->
+      <section id="midia">
+        <h2>Mídia em HTML</h2>
+
+        <article class="card">
+          <h3>Imagem com &lt;figure&gt;</h3>
+          <!-- figure: agrupa imagem com legenda semanticamente -->
+          <figure>
+            <img
+              src="https://via.placeholder.com/600x200/1a1a2e/ffffff?text=Tag+img"
+              alt="Exemplo da tag img — retângulo escuro com texto Tag img"
+              width="600"
+              height="200"
+              class="img-demo">
+            <!-- figcaption: legenda semântica da imagem -->
+            <figcaption>Exemplo de &lt;figure&gt; + &lt;figcaption&gt;</figcaption>
+          </figure>
+        </article>
+
+        <article class="card">
+          <h3>Vídeo incorporado com &lt;iframe&gt;</h3>
+          <!-- iframe: incorpora conteúdo externo (YouTube, Maps...) -->
+          <div class="iframe-wrapper">
+            <iframe
+              src="https://www.youtube.com/embed/Ejkb_YpuHWs"
+              title="Vídeo de exemplo sobre HTML e CSS"
+              allowfullscreen>
+            </iframe>
+          </div>
+          <!-- /embed/ é obrigatório na URL do YouTube para iframes -->
+        </article>
+      </section>
+
+      <!-- =============================================
+           SEÇÃO: CSS
+           ============================================= -->
+      <section id="css">
+        <h2>CSS — Cascata, Especificidade e Box Model</h2>
+
+        <article class="card">
+          <h3>Cascateamento e especificidade</h3>
+          <p>A regra com maior peso vence. Ordem de prioridade:</p>
+          <ol>
+            <li><strong>!important</strong> &mdash; sobrescreve tudo</li>
+            <li><strong>Inline</strong> &mdash; style="" na tag</li>
+            <li><strong>ID</strong> &mdash; especificidade 100</li>
+            <li><strong>Classe</strong> &mdash; especificidade 10</li>
+            <li><strong>Tag</strong> &mdash; especificidade 1</li>
+          </ol>
+
+          <!-- Demonstração visual da cascata -->
+          <div class="demo-cascata">
+            <p class="cor-classe" id="cor-id">
+              Este parágrafo tem classe E id — o id vence (cor diferente).
+            </p>
+            <p class="cor-classe">
+              Este só tem classe — a classe define a cor.
+            </p>
+            <p>
+              Este não tem nada — usa o padrão da tag p.
+            </p>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3>Box Model</h3>
+          <p>Todo elemento é uma caixa: content → padding → border → margin.</p>
+          <!-- Demonstração visual concêntrica do box model -->
+          <div class="box-margin">
+            margin
+            <div class="box-border">
+              border
+              <div class="box-padding">
+                padding
+                <div class="box-content">content</div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3>Pseudo-classes e pseudo-elementos</h3>
+          <div class="demo-pseudo">
+            <!-- :hover aplicado via CSS -->
+            <button class="btn-hover">Passe o mouse (:hover)</button>
+
+            <!-- :nth-child aplicado via CSS -->
+            <ul class="lista-nth">
+              <li>Item 1 — :first-child</li>
+              <li>Item 2 — :nth-child(even)</li>
+              <li>Item 3</li>
+              <li>Item 4 — :nth-child(even)</li>
+              <li>Item 5 — :last-child</li>
+            </ul>
+
+            <!-- ::before e ::after aplicados via CSS -->
+            <p class="com-before-after">
+              Este parágrafo tem ::before e ::after via CSS puro.
+            </p>
+
+            <!-- ::first-letter aplicado via CSS -->
+            <p class="primeira-letra">
+              Esta frase tem a primeira letra maior via ::first-letter.
+            </p>
+          </div>
+        </article>
+      </section>
+
+      <!-- =============================================
+           SEÇÃO: FLEXBOX
+           ============================================= -->
+      <section id="flexbox">
+        <h2>Flexbox</h2>
+
+        <article class="card">
+          <h3>justify-content — eixo principal</h3>
+          <!-- Cada div.flex-demo demonstra um valor de justify-content -->
+          <p><code>space-between</code>:</p>
+          <div class="flex-demo jc-between">
+            <div class="flex-item">A</div>
+            <div class="flex-item">B</div>
+            <div class="flex-item">C</div>
+          </div>
+
+          <p><code>center</code>:</p>
+          <div class="flex-demo jc-center">
+            <div class="flex-item">A</div>
+            <div class="flex-item">B</div>
+            <div class="flex-item">C</div>
+          </div>
+
+          <p><code>space-evenly</code>:</p>
+          <div class="flex-demo jc-evenly">
+            <div class="flex-item">A</div>
+            <div class="flex-item">B</div>
+            <div class="flex-item">C</div>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3>Cards com Flexbox (flex-grow + flex-direction: column)</h3>
+          <p>O <code>flex-grow: 1</code> no parágrafo empurra o botão para o fundo do card.</p>
+          <!-- container de cards usa display: flex -->
+          <div class="cards-flex">
+            <div class="card-flex">
+              <h4>HTML</h4>
+              <!-- p com flex-grow:1 cresce e empurra o botão para baixo -->
+              <p>Linguagem de marcação que define a estrutura das páginas web.</p>
+              <a href="#sobre" class="btn-card">Ver mais</a>
+            </div>
+            <div class="card-flex">
+              <h4>CSS</h4>
+              <p>Folha de estilos que controla a aparência e o layout.</p>
+              <a href="#css" class="btn-card">Ver mais</a>
+            </div>
+            <div class="card-flex">
+              <h4>JavaScript</h4>
+              <p>Linguagem de programação que adiciona interatividade e comportamento dinâmico.</p>
+              <a href="#" class="btn-card">Ver mais</a>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- =============================================
+           SEÇÃO: GRID
+           ============================================= -->
+      <section id="grid">
+        <h2>CSS Grid</h2>
+
+        <article class="card">
+          <h3>grid-template-areas — layout nomeado</h3>
+          <!-- grid-template-areas: cada filho usa grid-area: nome -->
+          <div class="grid-areas">
+            <div class="ga-header">header</div>
+            <div class="ga-sidebar">sidebar</div>
+            <div class="ga-main">main</div>
+            <div class="ga-footer">footer</div>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3>auto-fit + minmax() — responsivo sem media query</h3>
+          <!-- repeat(auto-fit, minmax(150px,1fr)): colunas criam/destroem sozinhas -->
+          <div class="grid-autofit">
+            <div class="grid-item">Item 1</div>
+            <div class="grid-item">Item 2</div>
+            <div class="grid-item">Item 3</div>
+            <div class="grid-item">Item 4</div>
+            <div class="grid-item">Item 5</div>
+            <div class="grid-item">Item 6</div>
+          </div>
+          <p><small>Redimensione a janela para ver as colunas se ajustando.</small></p>
+        </article>
+      </section>
+
+      <!-- =============================================
+           SEÇÃO: POSITION
+           ============================================= -->
+      <section id="posicao">
+        <h2>Position</h2>
+
+        <article class="card">
+          <h3>relative vs absolute</h3>
+          <p>
+            O pai tem <code>position: relative</code>. O filho com
+            <code>position: absolute</code> se posiciona em relação a ele.
+          </p>
+          <!-- container pai com position: relative -->
+          <div class="pos-container">
+            <p>Sou o pai (position: relative)</p>
+            <!-- filho absolute: sai do fluxo, âncora no pai -->
+            <div class="pos-absolute-filho">
+              absolute — top: 10px, right: 10px
+            </div>
+            <p>Este parágrafo não sabe que o filho absolute existe.</p>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3>sticky — gruda ao rolar</h3>
+          <!-- position: sticky: relative até atingir o ponto, depois gruda -->
+          <div class="scroll-container">
+            <div class="sticky-header">Cabeçalho sticky (top: 0)</div>
+            <p>Role este container para ver o sticky funcionando.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            <p>Sed do eiusmod tempor incididunt ut labore et dolore magna.</p>
+            <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
+            <p>Duis aute irure dolor in reprehenderit in voluptate velit.</p>
+          </div>
+        </article>
+      </section>
+
+      <!-- =============================================
+           SEÇÃO: CONTATO (formulário + entidades)
+           ============================================= -->
+      <section id="contato">
+        <h2>Contato &amp; Entidades HTML</h2>
+        <!-- &amp; → & | entidade HTML para o símbolo "e comercial" -->
+
+        <!-- aside: informação complementar sobre entidades -->
+        <aside class="dica">
+          <p>
+            Entidades HTML representam caracteres especiais:
+            <code>&amp;amp;</code> → &amp; |
+            <code>&amp;lt;</code> → &lt; |
+            <code>&amp;gt;</code> → &gt; |
+            <code>&amp;copy;</code> → &copy; |
+            <code>&amp;nbsp;</code> → espaço fixo |
+            <code>&amp;mdash;</code> → &mdash;
+          </p>
+        </aside>
+
+        <!-- :checked — técnica para mostrar/esconder formulário sem JS -->
+        <input type="checkbox" id="mostrar-form" class="toggle-escondido">
+        <label for="mostrar-form" class="btn-toggle-form">Mostrar formulário de contato</label>
+
+        <div class="form-wrapper">
+          <!-- form: container de formulário -->
+          <form class="formulario" action="#" method="get">
+            <div class="campo">
+              <label for="nome">Nome:</label>
+              <!-- :required, :valid, :invalid aplicados via CSS -->
+              <input type="text" id="nome" name="nome" required placeholder="Seu nome completo">
+            </div>
+            <div class="campo">
+              <label for="email">E-mail:</label>
+              <input type="email" id="email" name="email" required placeholder="seu@email.com">
+            </div>
+            <div class="campo">
+              <label for="mensagem">Mensagem:</label>
+              <textarea id="mensagem" name="mensagem" rows="4" placeholder="Sua mensagem..."></textarea>
+            </div>
+            <button type="submit" class="btn-enviar">Enviar &rarr;</button>
+            <!-- &rarr; → seta para a direita → -->
+          </form>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- =============================================
+         FOOTER — tag semântica de rodapé
+         ============================================= -->
+    <footer>
+      <p>
+        &copy; 2024 Portfólio de Estudos &mdash; Dev Web 1
+        <!-- &copy; → © | copyright -->
+      </p>
+      <p>HTML5 &amp; CSS3 &mdash; Todos os direitos reservados</p>
+      <!-- nav no footer: links de navegação repetidos no rodapé -->
+      <nav class="nav-footer">
+        <a href="#inicio">Início</a>
+        <a href="#sobre">HTML</a>
+        <a href="#css">CSS</a>
+        <a href="#flexbox">Flexbox</a>
+        <a href="#grid">Grid</a>
+      </nav>
+    </footer>
+
+  </div>
+  <!-- fim .wrapper -->
+
+  <!-- Botão "voltar ao topo" com position: fixed -->
+  <!-- position: fixed: fica grudado na tela independente do scroll -->
+  <a href="#inicio" class="btn-topo" aria-label="Voltar ao topo">&#8679;</a>
+
+</body>
+</html>
